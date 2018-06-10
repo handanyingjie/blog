@@ -15,6 +15,7 @@ class AdminController extends Controller
      */
     public function __construct(AdminRepostiry $admin)
     {
+        $this->middleware('auth');
         $this->admin = $admin;
     }
 

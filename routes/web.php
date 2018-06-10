@@ -11,11 +11,16 @@
 |
 */
 Route::group(['namespace' => 'Admin'], function () {
-    Route::get('/dashboard', 'AdminController@index'); //后台首页
+    Route::get('/admin', 'AdminController@index')->name('admin_index'); //后台首页
     Route::get('/admin/info/index','AdminController@admininfo');//管理员资料
     Route::get('/admin/usermember/index','AdminController@usermembershow');//用户管理界面
-    Route::get('admin/article/index','AdminController@articleshow');//已发文章界面
-    Route::get('admin/article/show','AdminController@uploadarticle');//创建文章
+
+    Route::get('admin/post/index','PostController@index')->name('post_index');//已发文章界面
+    Route::get('admin/post/show','PostController@create')->name('post_create');//创建文章
+    Route::post('admin/post/store','PostController@store')->name('post_store');//保存文章
+    Route::get('admin/post/edit/{post}','PostController@edit')->name('post_edit');//保存文章
+    Route::put('admin/post/update/{post}','PostController@update')->name('post_update');//更新文章
+    Route::delete('admin/post/destroy/{post}','PostController@destroy')->name('post_destroy');//更新文章
 });
 
 Route::group(['namespace' => 'Home'],function(){
@@ -24,3 +29,7 @@ Route::group(['namespace' => 'Home'],function(){
     Route::get('show','ArticleController@show')->name('home_detail');
 });
 
+
+Auth::routes();
+
+//Route::get('/home', 'HomeController@index');

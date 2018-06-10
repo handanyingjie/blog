@@ -73,7 +73,11 @@
                                     <a href="#" class="btn btn-default btn-flat">个人资料</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">退出</a>
+                                    <a href="{{ route('logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">退出</a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
                                 </div>
                             </li>
                         </ul>
@@ -146,7 +150,7 @@
                          </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('admin/article/index')}}"><i class="fa fa-star-o"></i>文章</a></li>
+                        <li><a href="{{ route('post_index') }}"><i class="fa fa-star-o"></i>文章</a></li>
                         <li><a href=""><i class="fa fa-star-o"></i>评论</a></li>
                     </ul>
                 <li class="header">LABELS</li>

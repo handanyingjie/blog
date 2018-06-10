@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-    <a href="{{url('admin/article/show')}}" class="btn btn-primary margin-bottom">撰写新文章</a>
+    <a href="{{ route('post_create') }}" class="btn btn-primary margin-bottom">撰写新文章</a>
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">文章列表</h3>
@@ -40,17 +40,24 @@
                     <th>更新时间</th>
                 </tr>
                 <!--tr-th end-->
-                <tr>
-                    <td>
-                        <a style="font-size: 16px" href="#"><i class="fa fa-fw fa-pencil" title="修改"></i></a>
-                        <a style="font-size: 16px" href="#"><i class="fa fa-fw fa-trash-o" title="删除"></i></a>
-                    </td>
-                    <td class="text-muted">Editor.md For Laravel5</td>
-                    <td class="text-green">LaravelChen</td>
-                    <td class="text-red">233</td>
-                    <td class="text-navy">2017-03-22 20:08:43</td>
-                    <td class="text-navy">2017-03-22 20:08:43</td>
-                </tr>
+                @foreach($posts as $post)
+                    <tr>
+                        <td>
+                            <a style="font-size: 16px" href="{{ route('post_edit',['post' =>$post->id])}}"><i class="fa fa-fw fa-pencil" title="修改"></i></a>
+                            <a style="font-size: 16px" href="#" onclick="event.preventDefault();
+                                                     document.getElementById('delete-form').submit();"><i class="fa fa-fw fa-trash-o" title="删除"></i></a>
+                            <form action="{{ route('post_destroy',['post' => $post->id]) }}" method="POST" id="delete-form">
+                                {!! csrf_field() !!}
+                                {!! method_field('delete') !!}
+                            </form>
+                        </td>
+                        <td class="text-muted">{{ $post->title }}</td>
+                        <td class="text-green">{{ $post->author }}</td>
+                        <td class="text-red">233</td>
+                        <td class="text-navy">{{ $post->created_at }}</td>
+                        <td class="text-navy">{{ $post->updated_at }}</td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

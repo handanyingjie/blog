@@ -11,32 +11,32 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        $admin = \App\Models\Role::create([
-            'name' => '管理员',
-            'slug' => 'admin',
-            'permissions' => [
-                'create-post' => true,
-                'update-post' => true,
-                'publish-post' => true,
-                'delete-post' => true
-            ]
-        ]);
-//        $author = \App\Models\Role::create([
-//            'name' => '作家',
-//            'slug' => 'author',
+//        $admin = \App\Models\Role::create([
+//            'name' => '管理员',
+//            'slug' => 'admin',
 //            'permissions' => [
-//                'create-post' => true
-//            ]
-//        ]);
-//
-//        $editor = \App\Models\Role::create([
-//            'name' => '编辑',
-//            'slug' => 'editor',
-//            'permissions' => [
+//                'create-post' => true,
 //                'update-post' => true,
 //                'publish-post' => true,
 //                'delete-post' => true
 //            ]
 //        ]);
+        $author = \App\Models\Role::create([
+            'name' => '作家',
+            'slug' => 'author',
+            'permissions' => [
+                'create-post' => true
+            ]
+        ]);
+
+        $editor = \App\Models\Role::create([
+            'name' => '编辑',
+            'slug' => 'editor',
+            'permissions' => [
+                'update-post' => true,
+                'publish-post' => true,
+                'delete-post' => true
+            ]
+        ]);
     }
 }

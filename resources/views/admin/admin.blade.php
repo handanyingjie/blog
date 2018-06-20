@@ -3,7 +3,7 @@
 {{--顶部导航--}}
 @section('main-header')
     <header class="main-header">
-        <a href="{{url('/dashboard')}}" class="logo">
+        <a href="{{ route('home_index') }}" class="logo">
             <span class="logo-mini">LC</span>
             <span class="logo-lg"><b>AdminLC</b></span>
         </a>

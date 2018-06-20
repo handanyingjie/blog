@@ -653,29 +653,29 @@ body, input, button, textarea, select {
     border-radius: 4px 4px 0 0;
 }
 
-.excerpt .focus {
-    float: left;
-    margin-left: -235px;
-    width: 220px;
-}
+/*.excerpt .focus {*/
+    /*float: left;*/
+    /*margin-left: -235px;*/
+    /*width: 220px;*/
+/*}*/
 
-.excerpt .thumb {
-    border-radius: 5px;
-    width: 220px;
-    height: 150px;
-    overflow: hidden;
-}
+/*.excerpt .thumb {*/
+    /*border-radius: 5px;*/
+    /*width: 220px;*/
+    /*height: 150px;*/
+    /*overflow: hidden;*/
+/*}*/
 
-.excerpt img {
-    display: inline;
-}
+/*.excerpt img {*/
+    /*display: inline;*/
+/*}*/
 
-.excerpt .focus:hover {
-    -webkit-transform: scale(1.05);
-    transform: scale(1.05);
-    -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-    transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-}
+/*.excerpt .focus:hover {*/
+    /*-webkit-transform: scale(1.05);*/
+    /*transform: scale(1.05);*/
+    /*-webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);*/
+    /*transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);*/
+/*}*/
 
 .excerpt header {
     margin-bottom: 10px;
@@ -1801,15 +1801,15 @@ body, input, button, textarea, select {
         padding: 10px 10px 10px 180px;
     }
 
-    .excerpt .focus {
-        width: 160px;
-        margin-left: -170px;
-    }
+    /*.excerpt .focus {*/
+        /*width: 160px;*/
+        /*margin-left: -170px;*/
+    /*}*/
 
-    .excerpt .thumb {
-        width: 160px;
-        height: 109px;
-    }
+    /*.excerpt .thumb {*/
+        /*width: 160px;*/
+        /*height: 109px;*/
+    /*}*/
 
     .excerpt .note {
         height: 40px;
@@ -2076,15 +2076,15 @@ body, input, button, textarea, select {
         padding: 10px 10px 10px 120px;
     }
 
-    .excerpt .focus {
-        width: 100px;
-        margin-left: -110px;
-    }
+    /*.excerpt .focus {*/
+        /*width: 100px;*/
+        /*margin-left: -110px;*/
+    /*}*/
 
-    .excerpt .thumb {
-        width: 100px;
-        height: 68px;
-    }
+    /*.excerpt .thumb {*/
+        /*width: 100px;*/
+        /*height: 68px;*/
+    /*}*/
 
     .excerpt .note {
         display: none;

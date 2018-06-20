@@ -45,8 +45,8 @@
                         <td>
                             <a style="font-size: 16px" href="{{ route('post_edit',['post' =>$post->id])}}"><i class="fa fa-fw fa-pencil" title="修改"></i></a>
                             <a style="font-size: 16px" href="#" onclick="event.preventDefault();
-                                                     document.getElementById('delete-form').submit();"><i class="fa fa-fw fa-trash-o" title="删除"></i></a>
-                            <form action="{{ route('post_destroy',['post' => $post->id]) }}" method="POST" id="delete-form">
+                                                     document.getElementById('delete-form-{{ $post->id }}').submit();"><i class="fa fa-fw fa-trash-o" title="删除"></i></a>
+                            <form action="{{ route('post_destroy',['post' => $post->id]) }}" method="POST" id="delete-form-{{ $post->id }}">
                                 {!! csrf_field() !!}
                                 {!! method_field('delete') !!}
                             </form>

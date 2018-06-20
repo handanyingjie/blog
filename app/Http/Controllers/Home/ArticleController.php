@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('home.article');
+        $posts = Post::latest()->get();
+        return view('home.index',compact('posts'));
     }
 
     /**
@@ -44,9 +46,10 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Post $post)
     {
-        return view('home.show');
+//        dd($post->replies);
+        return view('home.show',compact('post'));
     }
 
     /**

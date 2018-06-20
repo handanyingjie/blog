@@ -15,6 +15,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css')  }}">
     <link rel="apple-touch-icon-precomposed" href="{{ asset('images/icon.png')  }}">
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico')  }}">
+    {{--{!! editor_css() !!}--}}
+    {{--<link href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css" rel="stylesheet">--}}
     <script src="{{ asset('js/jquery-2.1.4.min.js')  }}"></script>
     <script src="{{ asset('js/nprogress.js')  }}"></script>
     <script src="{{ asset('js/jquery.lazyload.min.js')  }}"></script>
@@ -80,7 +82,7 @@
 </footer>
 {{--<script src="{{ asset('js/bootstrap.min.js')  }}"></script>--}}
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="{{ asset('js/jquery.ias.js')  }}"></script>
-<script src="{{ asset('js/scripts.js')  }}"></script>
+{{--<script src="{{ asset('js/jquery.ias.js')  }}"></script>--}}
+{{--<script src="{{ asset('js/scripts.js')  }}"></script>--}}
 </body>
 </html>

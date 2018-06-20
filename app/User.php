@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Reply;
 use App\Models\Role;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -30,6 +31,9 @@ class User extends Authenticatable
 
     public function roles(){
         return $this->belongsToMany(Role::class,'user_roles','user_id','role_id');
+    }
+    public function replies(){
+        return $this->hasMany(Reply::class,'user_id','id');
     }
 
     public function hasAccess($permission){

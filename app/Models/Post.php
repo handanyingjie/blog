@@ -18,6 +18,9 @@ class Post extends Model
         return $this->morphToMany(Tag::class,'taggable');
     }
 
+    public function replies(){
+        return $this->hasMany(Reply::class,'post_id','id');
+    }
     public function createPost(array $data){
         $post = $this->create(collect($data)->merge([
             'slug' => $data['title'],

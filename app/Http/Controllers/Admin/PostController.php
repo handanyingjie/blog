@@ -26,7 +26,7 @@ class PostController extends Controller
     }
 
     public function index(){
-        $posts = $this->post->get(['title','author','created_at','created_at','id']);
+        $posts = $this->post->latest()->get(['title','author','created_at','updated_at','id']);
         return view('admin.post.index',compact('posts'));
     }
     public function create(){

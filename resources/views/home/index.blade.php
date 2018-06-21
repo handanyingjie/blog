@@ -10,7 +10,7 @@
                         @foreach($posts as $post)
                             <li class="list-group-item">
                                 <a href="{{ route('home_show',['post' => $post->id]) }}">
-                                    <h4>{{ $post->title }}</h4>
+                                    <h5>{{ $post->title }}</h5>
                                 </a>
                             </li>
                         @endforeach

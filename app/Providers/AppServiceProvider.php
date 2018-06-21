@@ -33,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('see-all-drafts', function ($user) {
             return $user->inRole('editor');
         });
+
+//        DB::listen(function ($query){
+//            $str = preg_replace("/\?/","%s",$query->sql);
+//            $sql = vsprintf($str,$query->bindings);
+//            Log::info($sql);
+//        });
     }
 
     /**

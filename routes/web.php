@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/','HomeController@index');
+Route::get('/',function (){
+    return view('home.index');
+});
 Route::group(['namespace' => 'Admin'], function () {
     Route::get('/admin', 'AdminController@index')->name('admin_index'); //后台首页
     Route::get('/admin/info/index','AdminController@admininfo');//管理员资料
@@ -29,12 +31,12 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::delete('admin/post/destroy/{post}','PostController@destroy')
         ->name('post_destroy')->middleware('can:delete-post,post');//更新文章
 });
-
-Route::group(['namespace' => 'Home'],function(){
-    Route::get('/','HomeController@index')->name('home_index');
-    Route::get('/article','ArticleController@index')->name('home_article');
-    Route::get('/show/{post}','ArticleController@show')->name('home_show');
-});
+//
+//Route::group(['namespace' => 'Home'],function(){
+//    Route::get('/','HomeController@index')->name('home_index');
+//    Route::get('/article','ArticleController@index')->name('home_article');
+//    Route::get('/show/{post}','ArticleController@show')->name('home_show');
+//});
 
 
 Auth::routes();

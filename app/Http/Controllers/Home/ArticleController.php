@@ -49,7 +49,8 @@ class ArticleController extends Controller
     public function show(Post $post)
     {
 //        dd($post->replies);
-        return view('home.show',compact('post'));
+        $post->body = \Parsedown::instance()->text($post->body);
+        return response()->json($post);
     }
 
     /**

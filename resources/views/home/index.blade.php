@@ -106,6 +106,7 @@
                 <tags></tags>
                 <div class="panel panel-default">
                     <div class="panel-heading">最新文章</div>
+<<<<<<< HEAD
                     <ul class="list-inline" style="padding: 12px">
                         <li class="list-inline-item">
                             <a class="badge badge-pill badge-light border pull-left">Linux</a>

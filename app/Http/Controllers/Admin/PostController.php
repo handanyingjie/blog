@@ -36,7 +36,7 @@ class PostController extends Controller
     }
     public function store(CreateRequest $request){
         $this->post->createPost($request->except(['_token']));
-        return back()->withInput();
+        return redirect()->route('post_index');
     }
 
     public function edit(Post $post){
@@ -48,7 +48,7 @@ class PostController extends Controller
 
     public function update(UpdateRequest $request,Post $post){
        $post->updatePost($request->except(['_token']));
-        return back();
+        return redirect()->route('post_index');
     }
 
     public function destroy(Post $post){

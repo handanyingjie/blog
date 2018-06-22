@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
+    CONST PUBLISHED = 1;
+    CONST UN_PUBLISHED = 0;
     public $top = [
         1 => '是',
         2 => '否'
@@ -24,6 +26,9 @@ class Post extends Model
 
     public function replies(){
         return $this->hasMany(Reply::class,'post_id','id');
+    }
+    public function scopePublished($query){
+        return $query->where('published',self::PUBLISHED);
     }
     public function createPost(array $data){
         $post = $this->create(collect($data)->merge([

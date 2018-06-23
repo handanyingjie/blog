@@ -26,7 +26,7 @@ class PostController extends Controller
     }
 
     public function index(){
-        $posts = $this->post->latest()->get(['title','author','created_at','updated_at','id']);
+        $posts = $this->post->latest()->get(['title','author','created_at','updated_at','id','published']);
         return view('admin.post.index',compact('posts'));
     }
     public function create(){
@@ -53,6 +53,18 @@ class PostController extends Controller
 
     public function destroy(Post $post){
         $post->delete();
+        return back();
+    }
+
+    public function published(Post $post){
+        $post->published = 1;
+        $post->save();
+        return back();
+    }
+
+    public function unPublished(Post $post){
+        $post->published = 0;
+        $post->save();
         return back();
     }
 }

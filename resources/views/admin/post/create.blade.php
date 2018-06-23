@@ -100,7 +100,7 @@
                         @endif
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">发布文章</button>
+                <button type="submit" class="btn btn-primary">发布并保存</button>
             </div>
         </div>
     </form>

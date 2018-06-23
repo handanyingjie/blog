@@ -11,36 +11,35 @@
                         {{ post.title }}
                     </router-link>
                     <span class="meta pull-right">
-                        <router-link  v-for="(tag, index) in post.tags" :key="'tag_'+ index" :to="{ path: '/' , query: { tag: tag.id }}" :title="tag.slug">{{ tag.name }}</router-link>
-                        <span> ⋅ </span>
-                        12 点赞
-                        <span> ⋅ </span>
-                        0 回复
-                        <span> ⋅ </span>
-                        <span class="time">
+                        <!--<router-link  v-for="(tag, index) in post.tags" :key="'tag_'+ index" :to="{ path: '/' , query: { tag: tag.id }}" :title="tag.slug">{{ tag.name }}</router-link>-->
+                        <!--<span> ⋅ </span>-->
+                        <!--12 点赞-->
+                        <!--<span> ⋅ </span>-->
+                        <!--0 回复-->
+                        <!--<span> ⋅ </span>-->
+                        <!--<span class="time">-->
                             {{ post.created_at }}
-                        </span>
+                        <!--</span>-->
                     </span>
                 </li>
             </ul>
         </div>
+        <pageLink></pageLink>
     </div>
 </template>
 
 <script>
-    import axios from 'axios'
+    import {getPostList} from '../../api/api.js'
+    import pageLink from '../pageLink/Index'
 
     export default {
+        components: {
+            pageLink
+        },
         watch: {
-            // $route(to, from) {
-            //     console.log(to)
-            //     console.log(from)
-            // },
             $route: {
                 handler: function (val, oldVal) {
-                    console.info(val)
-                    console.info(oldVal)
-                    this.getPostsList()
+                    this.getPosts()
                 }
             },
         },
@@ -50,12 +49,12 @@
             }
         },
         mounted() {
-            this.getPostsList()
+            this.getPosts()
         },
         methods: {
-            getPostsList: function () {
+            getPosts: function () {
                 const tag_id = this.$route.query.tag ? this.$route.query.tag : 0
-                axios.get('api/posts/'+ tag_id)
+                getPostList(tag_id)
                     .then(response => {
                         this.posts = response.data
                     }).catch(err => {
@@ -67,11 +66,12 @@
 </script>
 
 <style scoped>
-    .meta{
+    .meta {
         font-size: 12px;
         color: #d0d0d0;
     }
-    .meta a{
+
+    .meta a {
         text-decoration: none;
         color: #A9A9A9;
         font-size: 13px;

@@ -18,7 +18,9 @@ Vue.use(VueRouter);
  */
 
 Vue.component('example', require('./components/Example.vue'));
-Vue.component('tags', require('./components/tags/index.vue'));
+// Vue.component('tags', require('./components/tags/index.vue'));
+// Vue.component('page', require('./components/pageLink/Index.vue'));
+// Vue.component('top-nav', require('./components/nav/Index.vue'));
 // Vue.component('breadcrumb-nav', require('./components/breadCrumbNav/Index.vue'));
 
 const routes = [

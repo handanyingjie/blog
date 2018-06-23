@@ -14,14 +14,7 @@ class Post extends Model
     ];
 
     protected $fillable = ['title','author','is_top','body','slug','user_id'];
-
-    public function getCreatedAtAttribute($date){
-        if(Carbon::now() > Carbon::parse($date)->addDays(15)){
-            return Carbon::parse($date);
-        }
-        return Carbon::parse($date)->diffForHumans();
-    }
-
+    
     public function tags(){
         return $this->morphToMany(Tag::class,'taggable');
     }

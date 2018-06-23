@@ -2,6 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             {{ post.title }}
+            <span class="pull-right">{{ post.created_at }}</span>
         </div>
 
         <div class="panel-body" v-html="post.body"></div>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Models\Post;
+use App\Models\Api\ApiPost;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +15,8 @@ class HomeController extends Controller
      */
     public function index($tag_id = 0)
     {
-        $query = Post::with('tags')->published()->latest();
+
+        $query = ApiPost::with('tags')->published()->latest();
         if($tag_id) {
             $query->whereExists(function ($query) use ($tag_id) {
                 $query->select('taggables.taggable_id')

@@ -17,8 +17,9 @@ Vue.use(VueRouter);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// Vue.component('example', require('./components/Example.vue'));
+Vue.component('example', require('./components/Example.vue'));
 Vue.component('tags', require('./components/tags/index.vue'));
+// Vue.component('breadcrumb-nav', require('./components/breadCrumbNav/Index.vue'));
 
 const routes = [
     { path: '/', component: require('./components/list/index.vue')},

@@ -13,9 +13,17 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($tag_id = 0)
     {
-        $posts = Post::published()->latest()->get(['id','title','created_at']);
+        $query = Post::with('tags')->published()->latest();
+        if($tag_id) {
+            $query->whereExists(function ($query) use ($tag_id) {
+                $query->select('taggables.taggable_id')
+                    ->from('taggables')
+                    ->whereRaw('taggables.taggable_id = posts.id AND taggables.tag_id='.$tag_id);
+            });
+        }
+        $posts = $query->get(['id','title','created_at']);
         return response()->json($posts);
     }
 

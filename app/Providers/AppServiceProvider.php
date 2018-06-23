@@ -4,7 +4,10 @@ namespace App\Providers;
 
 use App\Models\Post;
 use App\Observes\PostObserver;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,11 +37,15 @@ class AppServiceProvider extends ServiceProvider
             return $user->inRole('editor');
         });
 
-//        DB::listen(function ($query){
-//            $str = preg_replace("/\?/","%s",$query->sql);
-//            $sql = vsprintf($str,$query->bindings);
-//            Log::info($sql);
-//        });
+        //本地化Carbon
+        Carbon::setLocale('zh');
+
+        //打印SQL语句
+        DB::listen(function ($query){
+            $str = preg_replace("/\?/","%s",$query->sql);
+            $sql = vsprintf($str,$query->bindings);
+            Log::info($sql);
+        });
     }
 
     /**

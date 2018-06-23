@@ -73,7 +73,7 @@
             </div>
         </div>
     </nav>
-
+    <example></example>
     @yield('content')
 </div>
 

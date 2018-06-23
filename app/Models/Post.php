@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
-    CONST PUBLISHED = 1;
-    CONST UN_PUBLISHED = 0;
     public $top = [
         1 => '是',
         2 => '否'
@@ -16,15 +15,23 @@ class Post extends Model
 
     protected $fillable = ['title','author','is_top','body','slug','user_id'];
 
+    public function getCreatedAtAttribute($date){
+        if(Carbon::now() > Carbon::parse($date)->addDays(15)){
+            return Carbon::parse($date);
+        }
+        return Carbon::parse($date)->diffForHumans();
+    }
+
     public function tags(){
         return $this->morphToMany(Tag::class,'taggable');
     }
 
+    public function scopePublished($query){
+        return $query->where('published',1);
+    }
+
     public function replies(){
         return $this->hasMany(Reply::class,'post_id','id');
-    }
-    public function scopePublished($query){
-        return $query->where('published',self::PUBLISHED);
     }
     public function createPost(array $data){
         $post = $this->create(collect($data)->merge([

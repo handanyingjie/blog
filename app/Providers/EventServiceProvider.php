@@ -13,9 +13,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\SomeEvent' => [
-            'App\Listeners\EventListener',
-        ],
+//        'App\Events\Post\Delete' => [
+//            'App\Listeners\PostEventSubscriber',
+//        ],
+//        'App\Events\Post\Published' => [
+//            'App\Listeners\PostEventSubscriber',
+//        ]
     ];
 
     /**
@@ -29,4 +32,8 @@ class EventServiceProvider extends ServiceProvider
 
         //
     }
+
+    protected $subscribe = [
+        'App\Listeners\PostEventSubscriber'
+    ];
 }

@@ -19,18 +19,17 @@ class HomeController extends Controller
      */
     public function index($tag_id = 0)
     {
-        if($tag_id){
-            $idArr = json_decode(Redis::HGET('posts_tags',$tag_id),true);
+        if ($tag_id) {
+            $idArr = json_decode(Redis::HGET('posts_tags', $tag_id), true);
         } else {
-            $idArr = Redis::ZREVRANGEBYSCORE('posts:zset','+inf','-inf');
+            $idArr = Redis::LRANGE('newPosts', 0, -1);
         }
 
-        $postsArr = Redis::HMGET('posts',$idArr);
-
-        $posts = collect($postsArr)->map(function($post){
-            $post = json_decode($post,true);
-            $post['created_at'] = Carbon::parse($post['created_at'])->diffForHumans();
-            return collect($post)->only('id','title','created_at');
+        $posts = collect($idArr)->map(function ($key) {
+            $post['id'] = Redis::HGET($key,'id');
+            $post['title'] = Redis::HGET($key,'title');
+            $post['created_at'] = Carbon::parse(Redis::HGET($key,'created_at'))->diffForHumans();
+            return $post;
         });
         return response()->json($posts);
     }
@@ -48,7 +47,7 @@ class HomeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -59,7 +58,7 @@ class HomeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -70,7 +69,7 @@ class HomeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -81,8 +80,8 @@ class HomeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -93,7 +92,7 @@ class HomeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

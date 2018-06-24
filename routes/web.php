@@ -14,7 +14,26 @@ Route::get('/',function (){
     return view('home.index');
 });
 Route::get('/test',function () {
-    event(new App\Events\Post\Delete(\App\Models\Post::find(1)));
+//    \Illuminate\Support\Facades\Redis::del('posts_tags');
+//    return;
+//    $res = \Illuminate\Support\Facades\DB::table('taggables')
+//        ->leftjoin('posts','taggables.taggable_id','posts.id')
+//        ->where('posts.published',1)
+//        ->get(['taggables.taggable_id','taggables.tag_id','posts.id']);
+//
+//    $posts_tags = $res->map(function($item,$key){
+//        return ['post_id' => $item->id, 'tag_id' => $item->tag_id];
+//    })->groupBy('tag_id');
+//
+//    $posts_tags->each(function($item,$key){
+//        \Illuminate\Support\Facades\Redis::HSET('posts_tags',$key,json_encode($item->pluck('post_id')->all()));
+//    });
+
+//    \Illuminate\Support\Facades\Redis::HMSET('posts_tags',$posts_tags->toArray());
+//    $res = \Illuminate\Support\Facades\Redis::HGETALL('posts_tags');
+//    dump($posts_tags->toArray());
+    $res = \Illuminate\Support\Facades\Redis::HGETALL('posts_tags');
+    dump($res);
 });
 Route::group(['namespace' => 'Admin'], function () {
     Route::get('/admin', 'AdminController@index')->name('admin_index'); //后台首页

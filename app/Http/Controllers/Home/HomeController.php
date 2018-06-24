@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Home;
 
 use App\Models\Api\ApiPost;
+use App\Models\Tag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
 {
@@ -15,17 +19,19 @@ class HomeController extends Controller
      */
     public function index($tag_id = 0)
     {
-
-        $query = ApiPost::with('tags')->published()->latest();
-//        $query = ApiPost::with('tags')->latest();
-        if($tag_id) {
-            $query->whereExists(function ($query) use ($tag_id) {
-                $query->select('taggables.taggable_id')
-                    ->from('taggables')
-                    ->whereRaw('taggables.taggable_id = posts.id AND taggables.tag_id='.$tag_id);
-            });
+        if($tag_id){
+            $idArr = json_decode(Redis::HGET('posts_tags',$tag_id),true);
+        } else {
+            $idArr = Redis::ZREVRANGEBYSCORE('posts:zset','+inf','-inf');
         }
-        $posts = $query->get(['id','title','created_at']);
+
+        $postsArr = Redis::HMGET('posts',$idArr);
+
+        $posts = collect($postsArr)->map(function($post){
+            $post = json_decode($post,true);
+            $post['created_at'] = Carbon::parse($post['created_at'])->diffForHumans();
+            return collect($post)->only('id','title','created_at');
+        });
         return response()->json($posts);
     }
 

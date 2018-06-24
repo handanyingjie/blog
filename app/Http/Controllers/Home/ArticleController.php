@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Home;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redis;
 
 class ArticleController extends Controller
 {
@@ -46,10 +48,11 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($id)
     {
-//        dd($post->replies);
-        $post->body = \Parsedown::instance()->text($post->body);
+        $post = json_decode(Redis::HGET('posts',$id),true);
+        $post['created_at'] = Carbon::parse($post['created_at'])->toDateString();
+        $post['body'] = \Parsedown::instance()->text($post['body']);
         return response()->json($post);
     }
 

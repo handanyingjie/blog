@@ -8,6 +8,11 @@ use App\Http\Requests\Admin\Post\UpdateRequest;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Repository\AdminRepostiry;
+use App\Events\Post\Created;
+use App\Events\Post\Delete;
+use App\Events\Post\Published;
+use App\Events\Post\UnPublished;
+use App\Events\Post\Update;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +57,7 @@ class PostController extends Controller
     }
 
     public function destroy(Post $post){
+        event(new Delete($post));
         $post->delete();
         return back();
     }
@@ -59,12 +65,16 @@ class PostController extends Controller
     public function published(Post $post){
         $post->published = 1;
         $post->save();
+
+        event(new Published($post));
         return back();
     }
 
     public function unPublished(Post $post){
         $post->published = 0;
         $post->save();
+
+        event(new UnPublished($post));
         return back();
     }
 }

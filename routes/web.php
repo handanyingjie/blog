@@ -13,27 +13,9 @@
 Route::get('/',function (){
     return view('home.index');
 });
-//Route::get('/test',function(){
-//
-//    \Illuminate\Support\Facades\Mail::raw('hello world！', function ($message) {
-//        $to = 'handanyingjie@sina.com';
-//        $message ->to($to)->subject('来自郑晓博客的邮件测试');
-//    });
-//    die;
-//    $data = ['email'=>'handanyingjie@sina.com', 'name'=>'liuyingjie', 'uid'=>12, 'activationcode'=>1111];
-//    $flag = \Illuminate\Support\Facades\Mail::send('mail.test',$data,function($message) use ($data){
-//        $to = 'handanyingjie@sina.com';
-//        $message->to($data['email'],$data['name'])->subject('测试邮件');
-//    });
-
-//    $to = 'handanyingjie@sina.com';
-//    $flag = \Illuminate\Support\Facades\Mail::to($to)->send(new App\Mail\TestShipped());
-//    if($flag){
-//        echo '成功!';
-//    }else {
-//        echo '失败!';
-//    }
-//});
+Route::get('/test',function () {
+    event(new App\Events\Post\Delete(\App\Models\Post::find(1)));
+});
 Route::group(['namespace' => 'Admin'], function () {
     Route::get('/admin', 'AdminController@index')->name('admin_index'); //后台首页
     Route::get('/admin/info/index','AdminController@admininfo');//管理员资料

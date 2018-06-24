@@ -2,7 +2,7 @@
     <div id="tag" class="panel panel-default">
         <div class="panel-heading">标签</div>
         <ul class="list-group">
-            <router-link class="list-group-item" tag="li" v-for="(tag, index, key) of tags" :key="index" :to="{ path: '/', query: { tag: id } }">
+            <router-link class="list-group-item" tag="li" v-for="(tag, index, key) of tags" :key="index" :to="{ path: '/', query: { tag: tag.id } }">
                 <!--<a class="badge badge-pill badge-light border pull-left">{{ tag.name }} </a>-->
                 <span class="badge badge-light border">{{ tag.number }}</span>
                 <a>{{ tag.name }} </a>

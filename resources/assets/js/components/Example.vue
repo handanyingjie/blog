@@ -17,7 +17,7 @@
                             <div class="media-body padding-top-sm">
                                 <div class="media-heading">
                                 <span class="introduction">
-                                    O ever youthful, O ever weeping！
+                                    业精于勤,荒于嬉<br>行成于思,毁于随
                                 </span>
                                 </div>
                                 <ul class="list-inline">

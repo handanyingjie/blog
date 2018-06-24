@@ -44072,7 +44072,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "to": {
           path: '/',
           query: {
-            tag: _vm.id
+            tag: tag.id
           }
         }
       }
@@ -44200,7 +44200,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "media-heading"
   }, [_c('span', {
     staticClass: "introduction"
-  }, [_vm._v("\n                                O ever youthful, O ever weeping！\n                            ")])]), _vm._v(" "), _c('ul', {
+  }, [_vm._v("\n                                业精于勤,荒于嬉"), _c('br'), _vm._v("行成于思,毁于随\n                            ")])]), _vm._v(" "), _c('ul', {
     staticClass: "list-inline"
   }, [_c('li', {
     staticClass: "popover-with-html",

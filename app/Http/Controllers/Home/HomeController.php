@@ -17,6 +17,7 @@ class HomeController extends Controller
     {
 
         $query = ApiPost::with('tags')->published()->latest();
+//        $query = ApiPost::with('tags')->latest();
         if($tag_id) {
             $query->whereExists(function ($query) use ($tag_id) {
                 $query->select('taggables.taggable_id')

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redis;
 class PostEventSubscriber
 {
     private $redis;
+
     /**
      * Create the event listener.
      *
@@ -24,7 +25,7 @@ class PostEventSubscriber
     /**
      * Handle the event.
      *
-     * @param  PostEvent  $event
+     * @param  PostEvent $event
      * @return void
      */
 //    public function handle(PostEvent $event)
@@ -32,75 +33,87 @@ class PostEventSubscriber
 //        //
 //    }
 
-    public function onDecrRedisTag($event){
+    public function onDecrRedisTag($event)
+    {
         $event->post->tags()->each(function ($tag) {
-            $tagArr = json_decode($this->redis->HGET('tags',$tag->tag_id),true);
-            $tagArr['number'] --;
-            $this->redis->HSET('tags',$tag->tag_id,json_encode($tagArr));
+            $tagArr = json_decode($this->redis->HGET('tags', $tag->tag_id), true);
+            $tagArr['number']--;
+            $this->redis->HSET('tags', $tag->tag_id, json_encode($tagArr));
         });
     }
 
-    public function onIncrRedisTag($event){
+    public function onIncrRedisTag($event)
+    {
         $event->post->tags()->each(function ($tag) {
-            $tagArr = json_decode($this->redis->HGET('tags',$tag->tag_id),true);
-            $tagArr['number'] ++;
-            $this->redis->HSET('tags',$tag->tag_id,json_encode($tagArr));
+            $tagArr = json_decode($this->redis->HGET('tags', $tag->tag_id), true);
+            $tagArr['number']++;
+            $this->redis->HSET('tags', $tag->tag_id, json_encode($tagArr));
         });
     }
 
-    public function onDecrOrIncrRedisTag($event){
+    public function onDecrOrIncrRedisTag($event)
+    {
         $new = collect($event->new);
         $old = collect($event->old);
 
-        $new->diff($old->all())->each(function($tag){
-            $tagArr = json_decode($this->redis->HGET('tags',$tag),true);
-            $tagArr['number'] ++;
-            $this->redis->HSET('tags',$tag,json_encode($tagArr));
+        $new->diff($old->all())->each(function ($tag) {
+            $tagArr = json_decode($this->redis->HGET('tags', $tag), true);
+            $tagArr['number']++;
+            $this->redis->HSET('tags', $tag, json_encode($tagArr));
         });
 
-        $old->diff($new->all())->each(function($tag){
-            $tagArr = json_decode($this->redis->HGET('tags',$tag),true);
-            $tagArr['number'] --;
-            $this->Redis->HSET('tags',$tag,json_encode($tagArr));
+        $old->diff($new->all())->each(function ($tag) {
+            $tagArr = json_decode($this->redis->HGET('tags', $tag), true);
+            $tagArr['number']--;
+            $this->Redis->HSET('tags', $tag, json_encode($tagArr));
         });
     }
 
     //有序队列
-    public function onPostZADD($event){
-        $this->redis->ZADD('posts:zset',strtotime($event->post->created_at),$event->post->id);
+    public function onPostZADD($event)
+    {
+        $this->redis->LPUSH('newPosts', 'post:' . $event->post->id);
+        $this->redis->LTRIM('newPosts', 0, 1000);
     }
 
-    public function onPostZREM($event){
-        $this->redis->ZREM('posts:zset',$event->post->id);
+    public function onPostZREM($event)
+    {
+        $this->redis->LREM('newPosts', 0,'post:'.$event->post->id);
     }
 
     //文章
-    public function onPostHSet($event){
-        $this->redis->HSET('posts',$event->post->id,json_encode($event->post));
+    public function onPostHSet($event)
+    {
+        $this->redis->HMSET('post:' . $event->post->id, $event->post->toArray());
     }
 
-    public function onPostHDEL($event){
-        $this->redis->HDEL('posts',$event->post->id);
+    public function onPostHDEL($event)
+    {
+        $this->redis->DEL('post:' . $event->post->id);
     }
 
     //文章_标签
-    public function onPostsTagsHSETPush($event){
-        $event->post->tags()->each(function($item){
-            $old = json_decode(Redis::HGET('posts_tags',$item->tag_id),true);
-            Redis::HSET('posts_tags',$item->tag_id,json_encode(collect($old)->push($item->taggable_id)->unique()->toArray()));
-        });
-    }
-    public function onPostsTagsHSETDel($event){
-        $event->post->tags()->each(function($item){
-            $old = json_decode(Redis::HGET('posts_tags',$item->tag_id),true);
-            $new = collect($old)->reject(function($value) use ($item){
-                return $value == $item->taggable_id;
-            });
-            Redis::HSET('posts_tags',$item->tag_id,json_encode($new->all()));
+    public function onPostsTagsHSETPush($event)
+    {
+        $event->post->tags()->each(function ($item) {
+            $old = json_decode(Redis::HGET('posts_tags', $item->tag_id), true);
+            Redis::HSET('posts_tags', $item->tag_id, json_encode(collect($old)->push($item->taggable_id)->unique()->toArray()));
         });
     }
 
-    public function subscribe($events){
+    public function onPostsTagsHSETDel($event)
+    {
+        $event->post->tags()->each(function ($item) {
+            $old = json_decode(Redis::HGET('posts_tags', $item->tag_id), true);
+            $new = collect($old)->reject(function ($value) use ($item) {
+                return $value == $item->taggable_id;
+            });
+            Redis::HSET('posts_tags', $item->tag_id, json_encode($new->all()));
+        });
+    }
+
+    public function subscribe($events)
+    {
         $events->listen(
             'App\Events\Post\Delete',
             'App\Listeners\PostEventSubscriber@onDecrRedisTag'

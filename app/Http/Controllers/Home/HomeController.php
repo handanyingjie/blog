@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
@@ -21,6 +22,9 @@ class HomeController extends Controller
     {
         if ($tag_id) {
             $idArr = json_decode(Redis::HGET('posts_tags', $tag_id), true);
+            $idArr = collect($idArr)->sort()->reverse()->map(function($id){
+                return 'post:'.$id;
+            })->values();
         } else {
             $idArr = Redis::LRANGE('newPosts', 0, -1);
         }

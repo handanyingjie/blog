@@ -32,12 +32,12 @@
                         </li>
                         <li class="dropdown">
                             <a href="#">
-                                技术分享
+                                技术笔记
                             </a>
                         </li>
                         <li class="dropdown">
                             <a href="#">
-                                源码阅读
+                                每日阅读
                             </a>
                         </li>
                     </ul>

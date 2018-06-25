@@ -18,7 +18,7 @@ class ArticleController extends Controller
     public function index()
     {
         $posts = Post::latest()->get();
-        return view('home.index',compact('posts'));
+        return view('home.index', compact('posts'));
     }
 
     /**
@@ -34,7 +34,7 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -45,21 +45,25 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $post = json_decode(Redis::HGET('posts',$id),true);
-        $post['created_at'] = Carbon::parse($post['created_at'])->toDateString();
-        $post['body'] = \Parsedown::instance()->text($post['body']);
+        $post['id'] = Redis::HGET('post:' . $id, 'id');
+        $post['title'] = Redis::HGET('post:' . $id, 'title');
+        $post['created_at'] = Carbon::parse(Redis::HGET('post:' . $id, 'created_at'))->toDateString();
+        $post['body'] = \Parsedown::instance()->text(Redis::HGET('post:' . $id, 'body'));
+
+        Redis::HINCRBY('post:' . $id, 'looks', 1);
+        $post['looks'] = Redis::HGET('post:' . $id, 'looks');
         return response()->json($post);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -70,8 +74,8 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -82,7 +86,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

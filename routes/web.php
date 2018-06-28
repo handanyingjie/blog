@@ -27,7 +27,7 @@ Route::group(['namespace' => 'Admin'], function () {
         ->name('post_edit');//保存文章
     Route::put('admin/post/update/{id}','PostController@update')
         ->name('post_update');//更新文章
-    Route::delete('admin/post/destroy/{post}','PostController@destroy')
+    Route::delete('admin/post/destroy/{id}','PostController@destroy')
         ->name('post_destroy');//更新文章
     Route::put('admin/post/published/{post}','PostController@published')
         ->name('post_published');   //发布

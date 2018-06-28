@@ -27,7 +27,7 @@ class HomeController extends Controller
                 return 'post:' . $id;
             })->values();
         } else {
-            $idArr = Redis::LRANGE('newPosts', 0, -1);
+            $idArr = Redis::LRANGE('posts:list', 0, -1);
         }
 
         $posts = collect($idArr)->map(function ($key) {

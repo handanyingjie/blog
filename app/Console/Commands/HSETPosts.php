@@ -57,7 +57,7 @@ class HSETPosts extends Command
     }
 
     private function generatePosts(){
-        $posts = $this->model->published()
+        $posts = $this->model
             ->limit(1000)
             ->latest()
             ->get();

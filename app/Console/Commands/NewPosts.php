@@ -13,7 +13,7 @@ class NewPosts extends Command
      *
      * @var string
      */
-    protected $signature = 'lpush:new-post';
+    protected $signature = 'posts:list';
 
     /**
      * The console command description.
@@ -24,7 +24,7 @@ class NewPosts extends Command
 
     private $redis;
     private $model;
-    private $key = 'newPosts';
+    private $key = 'posts:list';
 
     /**
      * Create a new command instance.

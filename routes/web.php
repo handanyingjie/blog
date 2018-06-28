@@ -22,13 +22,13 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get('admin/post/show','PostController@create')
         ->name('post_create');//创建文章
     Route::post('admin/post/store','PostController@store')
-        ->name('post_store')->middleware('can:create-post');//保存文章
-    Route::get('admin/post/edit/{post}','PostController@edit')
+        ->name('post_store');//保存文章
+    Route::get('admin/post/edit/{id}','PostController@edit')
         ->name('post_edit');//保存文章
-    Route::put('admin/post/update/{post}','PostController@update')
-        ->name('post_update')->middleware('can:update-post,post');//更新文章
+    Route::put('admin/post/update/{id}','PostController@update')
+        ->name('post_update');//更新文章
     Route::delete('admin/post/destroy/{post}','PostController@destroy')
-        ->name('post_destroy')->middleware('can:delete-post,post');//更新文章
+        ->name('post_destroy');//更新文章
     Route::put('admin/post/published/{post}','PostController@published')
         ->name('post_published');   //发布
     Route::put('admin/post/unpublished/{post}','PostController@unPublished')
@@ -37,8 +37,8 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get('admin/tag/index','TagController@index')->name('tag_index');
     Route::get('admin/tag/create','TagController@create')->name('tag_create');
     Route::post('admin/tag/store','TagController@store')->name('tag_store');
-    Route::get('admin/tag/edit','TagController@edit')->name('tag_edit');
-    Route::put('admin/tag/update','TagController@update')->name('tag_update');
+    Route::get('admin/tag/edit/{id}','TagController@edit')->name('tag_edit');
+    Route::put('admin/tag/update/{id}','TagController@update')->name('tag_update');
     Route::put('admin/tag/destroy','TagController@destroy')->name('tag_destroy');
 });
 

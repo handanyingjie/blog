@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
         return [
             'title' => 'required',
             'author' => 'required',
-            'tag_id' => 'required|exists:tags,id',
+            'tag_id' => 'required',
             'is_top' => 'required',
             'body' => 'required'
         ];

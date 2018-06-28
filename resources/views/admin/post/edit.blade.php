@@ -16,7 +16,7 @@
 
 @section('content')
     <h2 class="page-header">编辑新文章</h2>
-    <form method="POST" action="{{ route('post_update',['post' => $post->id]) }}" accept-charset="utf-8">
+    <form method="POST" action="{{ route('post_update',['post' => $id]) }}" accept-charset="utf-8">
         {!! csrf_field() !!}
         {!! method_field('put') !!}
         <div class="nav-tabs-custom">
@@ -32,7 +32,7 @@
                             <small class="text-red">*</small>
                         </label>
                         <input required="required" type="text" class="form-control" name="title" autocomplete="off"
-                               placeholder="标题" maxlength="80" value="{{ $post->title }}">
+                               placeholder="标题" maxlength="80" value="{{ $post['title'] }}">
 
                         @if($errors->has('title'))
                             <span class="help-block">
@@ -45,7 +45,7 @@
                             <small class="text-red">*</small>
                         </label>
                         <input required="required" type="text" class="form-control" name="author" autocomplete="off"
-                               placeholder="作者" maxlength="80" value="{{ $post->author }}">
+                               placeholder="作者" maxlength="80" value="{{ $post['author'] }}">
 
                         @if($errors->has('author'))
                             <span class="help-block">
@@ -59,7 +59,7 @@
                         </label>
                         <select class="js-example-basic-multiple form-control" multiple="multiple" name="tag_id[]">
                             @foreach($tags as $tag)
-                                <option value="{{ $tag->id }}" @if(is_array($tag_id) && in_array($tag->id,$tag_id)) selected @endif>{{ $tag->name }}</option>
+                                <option value="{{ $tag['id'] }}" @if(is_array($tag_id) && in_array($tag['id'],$tag_id)) selected @endif>{{ $tag['name'] }}</option>
                             @endforeach
                         </select>
 
@@ -76,7 +76,7 @@
                         <select class="js-example-placeholder-single form-control" name="is_top">
                             <option value=""></option>
                             @foreach($is_top as $key => $top)
-                                <option value="{{$key}}" @if($key == $post->is_top) selected @endif>{{ $top  }}</option>
+                                <option value="{{$key}}" @if($key == $post['is_top']) selected @endif>{{ $top  }}</option>
                             @endforeach
                         </select>
 
@@ -91,7 +91,7 @@
                             <small class="text-red">*</small>
                             <span class="text-green">min:20</span></label>
                         <div id="editormd_id">
-                            <textarea name="body" style="display:none;">{{ $post->body }}</textarea>
+                            <textarea name="body" style="display:none;">{{ $post['body'] }}</textarea>
                         </div>
 
                         @if($errors->has('body'))

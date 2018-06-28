@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use App\Services\Tag;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,21 +22,21 @@ class AppServiceProvider extends ServiceProvider
     {
         Post::observe(PostObserver::class);
 
-        Gate::define('create-post', function ($user) {
-            return $user->hasAccess('create-post');
-        });
-        Gate::define('update-post', function ($user, Post $post) {
-            return $user->hasAccess('update-post') or $user->id == $post->user_id;
-        });
-        Gate::define('publish-post', function ($user, Post $post) {
-            return $user->hasAccess('publish-post') or $user->id == $post->user_id;
-        });
-        Gate::define('delete-post', function ($user, Post $post) {
-            return $user->hasAccess('delete-post') or $user->id == $post->user_id;
-        });
-        Gate::define('see-all-drafts', function ($user) {
-            return $user->inRole('editor');
-        });
+//        Gate::define('create-post', function ($user) {
+//            return $user->hasAccess('create-post');
+//        });
+//        Gate::define('update-post', function ($user, Post $post) {
+//            return $user->hasAccess('update-post') or $user->id == $post->user_id;
+//        });
+//        Gate::define('publish-post', function ($user, Post $post) {
+//            return $user->hasAccess('publish-post') or $user->id == $post->user_id;
+//        });
+//        Gate::define('delete-post', function ($user, Post $post) {
+//            return $user->hasAccess('delete-post') or $user->id == $post->user_id;
+//        });
+//        Gate::define('see-all-drafts', function ($user) {
+//            return $user->inRole('editor');
+//        });
 
         //本地化Carbon
         Carbon::setLocale('zh');
@@ -55,6 +56,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 }

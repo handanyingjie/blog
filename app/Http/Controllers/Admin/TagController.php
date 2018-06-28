@@ -5,9 +5,16 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
+use App\Services\Tag;
 
 class TagController extends Controller
 {
+    private  $redis;
+    public function __construct(Tag $reids)
+    {
+        $this->redis = $reids;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +22,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = collect(Redis::KEYS('tag:*'))->map(function($key){
-            return [ 'id' => $key, 'name' => Redis::HGET($key,'name')];
-        });
+        $tags = $this->redis->tags();
         return view('admin.tag.index',compact('tags'));
     }
 
@@ -39,8 +44,8 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $key = Redis::INCR('tags:count');
-        Redis::HSET("tag:$key",'name', $request->name());
+        $id = $this->redis->generateTagKey('tags:count');
+        $this->redis->generateTags("tag:$id",$request->name);
         return redirect()->route('tag_index');
     }
 
@@ -63,7 +68,8 @@ class TagController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tag = $this->redis->tag($id);
+        return view('admin.tag.edit',compact('tag','id'));
     }
 
     /**
@@ -75,7 +81,8 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->redis->generateTags($id,$request->name);
+        return redirect()->route('tag_index');
     }
 
     /**
@@ -86,6 +93,7 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->redis->del($id);
+        return back();
     }
 }

@@ -58,7 +58,7 @@
                         </label>
                         <select class="js-example-basic-multiple form-control" multiple="multiple" name="tag_id[]">
                             @foreach($tags as $tag)
-                                <option value="{{ $tag->id }}" @if(is_array(old('tag_id')) && in_array($tag->id,old('tag_id'))) selected @endif>{{ $tag->name }}</option>
+                                <option value="{{ $tag['id'] }}" @if(is_array(old('tag_id')) && in_array($tag['id'],old('tag_id'))) selected @endif>{{ $tag['name'] }}</option>
                             @endforeach
                         </select>
 

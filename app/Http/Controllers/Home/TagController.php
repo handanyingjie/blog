@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Redis;
+use App\Services\Tag;
 
 class TagController extends Controller
 {
+    private $tag;
+    public function __construct(Tag $tag)
+    {
+        $this->tag = $tag;
+    }
+
     public function index(){
-        $tags = Redis::HGETALL('tags');
-        $arr = [];
-        collect($tags)->each(function($tag) use (&$arr){
-            $newArr = json_decode($tag,true);
-            array_push($arr,['id' => $newArr['id'],'name' => $newArr['name'], 'number' => $newArr['number']]);
+        $tags = $this->tag->tags();
+        $tags = collect($tags)->map(function($tag){
+            return ['id' => $tag['id'],'name' => $tag['name'], 'number' => Redis::SCARD($tag['id'].":posts")];
         });
-        return response()->json($arr);
+        return response()->json($tags);
     }
 }

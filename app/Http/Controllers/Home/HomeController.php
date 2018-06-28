@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function index($tag_id = 0)
     {
         if ($tag_id) {
-            $idArr = json_decode(Redis::HGET('posts_tags', $tag_id), true);
+            $idArr = Redis::SMEMBERS($tag_id.":posts");
             $idArr = collect($idArr)->sort()->reverse()->map(function ($id) {
                 return 'post:' . $id;
             })->values();

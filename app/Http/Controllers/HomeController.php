@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
 {
@@ -15,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     /**
@@ -25,8 +26,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->get();
-        $tags = Tag::get();
-        return view('home',compact('posts','tags'));
+        return view('home.index');
+    }
+
+    public function test(){
+        return Redis::HGET('posts_tags',1);
     }
 }

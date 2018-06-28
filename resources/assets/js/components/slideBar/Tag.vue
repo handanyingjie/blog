@@ -1,5 +1,5 @@
 <template>
-    <div id="tag" class="panel panel-default">
+    <div id="tag" ref="tags" :class="{ 'panel': true, 'panel-default': true }">
         <div class="panel-heading">标签</div>
         <ul class="list-group">
             <router-link class="list-group-item" tag="li" v-for="(tag, index, key) of tags" :key="index" :to="{ path: '/', query: { tag: tag.id } }">
@@ -17,11 +17,14 @@
     export default {
         data: function () {
             return {
-                tags: ''
+                tags: '',
+                box: null,
+                fixed: false
             }
         },
         mounted() {
             this.getTags()
+            // window.addEventListener('scroll', this.handleScroll)
         },
         methods: {
             getTags: function () {
@@ -32,7 +35,16 @@
                     .catch( err => {
                         console.log(err)
                     } )
-            }
+            },
+            // handleScroll: function(e){
+            //     // console.log(e.target.documentElement.scrollTop)
+            //     // console.log()
+            //     // console.log(this.$refs.tags.offsetTop)
+            //     if(e.target.documentElement.scrollTop >= this.$refs.tags.offsetTop){
+            //         this.fixed = true
+            //         // this.$refs.tags.addClass('sfixed')
+            //     }
+            // }
         }
     }
 </script>
@@ -42,8 +54,6 @@
         color: #6c757d;
         font-weight: normal;
         font-size: 12px;
-        /*padding: 5px;*/
-        /*margin-top: 12px;*/
     }
     .badge-light {
         background-color: #f8f9fa;
@@ -52,9 +62,4 @@
     .border {
         border: 1px solid #dee2e6 !important;
     }
-    /*.badge-light[href]:hover, .badge-light[href]:focus{*/
-        /*color: #212529;*/
-        /*text-decoration: none;*/
-        /*background-color: #dae0e5;*/
-    /*}*/
 </style>

@@ -140,7 +140,18 @@
                         <li><a href="#"><i class="fa fa-star-o"></i>权限</a></li>
                     </ul>
                 </li>
-
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-pie-chart"></i>
+                        <span>标签管理</span>
+                        <span class="pull-right-container">
+                             <i class="fa fa-angle-left pull-right"></i>
+                         </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ route('tag_index') }}"><i class="fa fa-star-o"></i>标签</a></li>
+                    </ul>
+                </li>
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
@@ -153,12 +164,11 @@
                         <li><a href="{{ route('post_index') }}"><i class="fa fa-star-o"></i>文章</a></li>
                         <li><a href=""><i class="fa fa-star-o"></i>评论</a></li>
                     </ul>
+                </li>
                 <li class="header">LABELS</li>
                 <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
                 <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
                 <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
-                </li>
-
             </ul>
         </section>
         <!-- /.sidebar -->

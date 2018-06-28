@@ -7,3 +7,7 @@ export function getPostList(tag_id) {
 export function getTagList() {
     return axios.get('api/tags')
 }
+
+export function getRankList() {
+    return axios.get('api/read');
+}

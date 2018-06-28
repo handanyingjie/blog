@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
+    <div id="nav">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
@@ -25,7 +25,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav">
                         <!-- Authentication Links -->
                         <li class="dropdown">
                             <router-link :to="{ path: '/' }">首页</router-link>

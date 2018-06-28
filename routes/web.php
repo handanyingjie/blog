@@ -10,26 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',function (){
-    return view('home.index');
-});
-Route::get('/test',function () {
-    $res = \Illuminate\Support\Facades\Redis::HGETALL('post:1');
-    dump($res);
-//    $res = \Carbon\Carbon::now('Africa/Abidjan');
-//    echo $res."<br>";
-
-//    $res = \Carbon\Carbon::create(1988, 7, 3, 10, 10, 10);
-//    echo $res."<br>";
-//    $res = \Carbon\Carbon::createSafe(1988, 7, 3, 10, 10, 10);
-//    $res = \Carbon\Carbon::today();
-//    $res = \Carbon\Carbon::tomorrow('Africa/Abidjan');
-//    echo $res."<br>";
-
-    $res = \Carbon\Carbon::createFromDate(1988, 7, 3)->toDateString();
-    echo $res;
-
-});
+Route::get('/','HomeController@index');
+Route::get('/test','HomeController@test');
 Route::group(['namespace' => 'Admin'], function () {
     Route::get('/admin', 'AdminController@index')->name('admin_index'); //后台首页
     Route::get('/admin/info/index','AdminController@admininfo');//管理员资料
@@ -52,15 +34,12 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::put('admin/post/unpublished/{post}','PostController@unPublished')
         ->name('post_unpublished');
 
+    Route::get('admin/tag/index','TagController@index')->name('tag_index');
+    Route::get('admin/tag/create','TagController@create')->name('tag_create');
+    Route::post('admin/tag/store','TagController@store')->name('tag_store');
+    Route::get('admin/tag/edit','TagController@edit')->name('tag_edit');
+    Route::put('admin/tag/update','TagController@update')->name('tag_update');
+    Route::put('admin/tag/destroy','TagController@destroy')->name('tag_destroy');
 });
-//
-//Route::group(['namespace' => 'Home'],function(){
-//    Route::get('/','HomeController@index')->name('home_index');
-//    Route::get('/article','ArticleController@index')->name('home_article');
-//    Route::get('/show/{post}','ArticleController@show')->name('home_show');
-//});
-
 
 Auth::routes();
-
-//Route::get('/home', 'HomeController@index');

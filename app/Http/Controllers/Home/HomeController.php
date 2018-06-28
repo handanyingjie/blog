@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
@@ -22,17 +23,17 @@ class HomeController extends Controller
     {
         if ($tag_id) {
             $idArr = json_decode(Redis::HGET('posts_tags', $tag_id), true);
-            $idArr = collect($idArr)->sort()->reverse()->map(function($id){
-                return 'post:'.$id;
+            $idArr = collect($idArr)->sort()->reverse()->map(function ($id) {
+                return 'post:' . $id;
             })->values();
         } else {
             $idArr = Redis::LRANGE('newPosts', 0, -1);
         }
 
         $posts = collect($idArr)->map(function ($key) {
-            $post['id'] = Redis::HGET($key,'id');
-            $post['title'] = Redis::HGET($key,'title');
-            $post['created_at'] = Carbon::parse(Redis::HGET($key,'created_at'))->diffForHumans();
+            $post['id'] = Redis::HGET($key, 'id');
+            $post['title'] = Redis::HGET($key, 'title');
+            $post['created_at'] = Carbon::parse(Redis::HGET($key, 'created_at'))->diffForHumans();
             return $post;
         });
         return response()->json($posts);
@@ -102,5 +103,17 @@ class HomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function readRank()
+    {
+        $posts = collect(Redis::ZREVRANGEBYSCORE('readRank', '+inf', '-inf', 'WITHSCORES', 'LIMIT', 0, 10))
+                ->map(function ($value, $key) {
+                $post['id'] = Redis::HGET($key,'id');
+                $post['title'] = Redis::HGET($key,'title');
+                $post['looks'] = $value ?: 0;
+                return $post;
+            });
+        return response()->json($posts);
     }
 }

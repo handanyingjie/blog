@@ -13,11 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 Route::group(['namespace' => 'Home'],function (){
     Route::get('posts/{tag_id?}','HomeController@index');
     Route::get('post/{id}','ArticleController@show');
     Route::get('tags','TagController@index');
+    Route::get('read','HomeController@readRank');
 });

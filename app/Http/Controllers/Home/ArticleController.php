@@ -50,14 +50,29 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $post['id'] = Redis::HGET('post:' . $id, 'id');
-        $post['title'] = Redis::HGET('post:' . $id, 'title');
-        $post['created_at'] = Carbon::parse(Redis::HGET('post:' . $id, 'created_at'))->toDateString();
-        $post['body'] = \Parsedown::instance()->text(Redis::HGET('post:' . $id, 'body'));
+        $key = "post:$id";
+        $post['id'] = Redis::HGET($key, 'id');
+        $post['title'] = Redis::HGET($key, 'title');
+        $post['created_at'] = Carbon::parse(Redis::HGET($key, 'created_at'))->toDateString();
+        $post['body'] = \Parsedown::instance()->text(Redis::HGET($key, 'body'));
 
-        Redis::HINCRBY('post:' . $id, 'looks', 1);
-        $post['looks'] = Redis::HGET('post:' . $id, 'looks');
+        Redis::HINCRBY($key, 'looks', 1);
+        Redis::ZINCRBY('readRank',1, $key);
+        $post['looks'] = Redis::ZSCORE('readRank',$key);
+        $post['prev'] = str_replace('post:','',Redis::HGET($key, 'prev'));
+        $post['next'] = str_replace('post:','',Redis::HGET($key,'next'));
         return response()->json($post);
+    }
+
+    private function generatePageLink($id,$max,$symbol = true){
+        if($id < 1)
+        $suffix = true === $symbol ? $id++ : $id --;
+        $key = "post:$suffix";
+        if(Redis::exists($key)) {
+            return $key;
+        }
+
+        $this->generatePageLink($id,$symbol);
     }
 
     /**

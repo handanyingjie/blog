@@ -14,7 +14,10 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\HSETPosts',
-        'App\Console\Commands\NewPosts'
+        'App\Console\Commands\NewPosts',
+        'App\Console\Commands\ReadRank',
+        'App\Console\Commands\test',
+        'App\Console\Commands\tags'
     ];
 
     /**

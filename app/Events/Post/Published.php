@@ -15,15 +15,15 @@ class Published
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $post;
+    public $id;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Post $post)
+    public function __construct($id)
     {
-        $this->post = $post;
+        $this->id = $id;
     }
 
     /**

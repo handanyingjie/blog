@@ -44,7 +44,7 @@ class PostController extends Controller
     public function store(CreateRequest $request){
         $id = $this->post->generateTagKey('posts:count');
         $this->post->generatePost("post:$id",$request->except(['_token','_method','tag_id']));
-        $this->post->postsList("post:$id");
+        
         $this->redis->generateTagPosts($request->tag_id, "post:$id");
         return redirect()->route('post_index');
     }
@@ -68,19 +68,17 @@ class PostController extends Controller
         return back();
     }
 
-    public function published(Post $post){
-        $post->published = 1;
-        $post->save();
+    public function published($id){
+        Redis::HSET($id,'published',1);
 
-        event(new Published($post));
+        event(new Published($id));
         return back();
     }
 
-    public function unPublished(Post $post){
-        $post->published = 0;
-        $post->save();
+    public function unPublished($id){
+        Redis::HSET($id,'published',0);
 
-        event(new UnPublished($post));
+        event(new UnPublished($id));
         return back();
     }
 }

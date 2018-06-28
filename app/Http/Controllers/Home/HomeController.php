@@ -23,9 +23,6 @@ class HomeController extends Controller
     {
         if ($tag_id) {
             $idArr = Redis::SMEMBERS($tag_id.":posts");
-            $idArr = collect($idArr)->sort()->reverse()->map(function ($id) {
-                return 'post:' . $id;
-            })->values();
         } else {
             $idArr = Redis::LRANGE('posts:list', 0, -1);
         }
@@ -33,7 +30,7 @@ class HomeController extends Controller
         $posts = collect($idArr)->map(function ($key) {
             $post['id'] = Redis::HGET($key, 'id');
             $post['title'] = Redis::HGET($key, 'title');
-            $post['created_at'] = Carbon::parse(Redis::HGET($key, 'created_at'))->diffForHumans();
+            $post['created_at'] = Carbon::parse(Redis::HGET($key, 'published_at'))->diffForHumans();
             return $post;
         });
         return response()->json($posts);

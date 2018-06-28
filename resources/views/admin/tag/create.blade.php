@@ -14,7 +14,7 @@
 @stop
 @section('content')
     <h2 class="page-header">添加新标签</h2>
-    <form action="{{ route('tag_create') }}" method="POST" accept-charset="utf-8">
+    <form action="{{ route('tag_store') }}" method="POST" accept-charset="utf-8">
         {!! csrf_field() !!}
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">

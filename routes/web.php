@@ -29,9 +29,9 @@ Route::group(['namespace' => 'Admin'], function () {
         ->name('post_update');//更新文章
     Route::delete('admin/post/destroy/{id}','PostController@destroy')
         ->name('post_destroy');//更新文章
-    Route::put('admin/post/published/{post}','PostController@published')
+    Route::put('admin/post/published/{id}','PostController@published')
         ->name('post_published');   //发布
-    Route::put('admin/post/unpublished/{post}','PostController@unPublished')
+    Route::put('admin/post/unpublished/{id}','PostController@unPublished')
         ->name('post_unpublished');
 
     Route::get('admin/tag/index','TagController@index')->name('tag_index');

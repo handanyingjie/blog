@@ -62,25 +62,8 @@ class HSETPosts extends Command
             ->latest()
             ->get();
         $posts->except(['updated_at'])
-            ->map(function($post,$index) use($posts){
-                if(count($posts) == 1){
-                    $prev = $next =  $posts->id;
-                } elseif(0 === $index && isset($posts[1])){
-                    $prev = $posts[$index]->id;
-                    $next = $posts[1]->id;
-                } elseif($index > 0 && isset($posts[$index + 1])) {
-                    $prev = $posts[$index - 1]->id;
-                    $next = $posts[$index + 1]->id;
-                } elseif($index == count($posts) - 1){
-                    $prev = $posts[$index - 1]->id;
-                    $next = $posts[$index]->id;
-                }
-
-                $prev = "post:$prev";
-                $next = "post:$next";
-                $this->info($prev);
-                $this->info($next);
-                $this->info($this->redis->HMSET("post:$post->id",collect($post)->merge(['prev' => $prev,'next' => $next])->toArray()));
+            ->each(function($post,$index){
+                $this->info($this->redis->HMSET("post:$post->id",$post->toArray()));
             });
     }
 }

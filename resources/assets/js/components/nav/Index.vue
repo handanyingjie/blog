@@ -30,16 +30,16 @@
                         <li class="dropdown">
                             <router-link :to="{ path: '/' }">首页</router-link>
                         </li>
-                        <li class="dropdown">
-                            <a href="#">
-                                技术笔记
-                            </a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#">
-                                每日阅读
-                            </a>
-                        </li>
+                        <!--<li class="dropdown">-->
+                            <!--<a href="#">-->
+                                <!--技术笔记-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <!--<li class="dropdown">-->
+                            <!--<a href="#">-->
+                                <!--每日阅读-->
+                            <!--</a>-->
+                        <!--</li>-->
                     </ul>
                 </div>
             </div>

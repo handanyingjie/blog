@@ -58,8 +58,8 @@ class ArticleController extends Controller
         Redis::HINCRBY($id, 'looks', 1);
         Redis::ZINCRBY('readRank',1, $id);
         $post['looks'] = Redis::ZSCORE('readRank',$id);
-        $post['prev'] = str_replace('post:','',Redis::HGET($id, 'prev'));
-        $post['next'] = str_replace('post:','',Redis::HGET($id,'next'));
+        $post['prev'] = Redis::HGET($id, 'prev');
+        $post['next'] = Redis::HGET($id,'next');
         return response()->json($post);
     }
 

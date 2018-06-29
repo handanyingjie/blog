@@ -24,8 +24,8 @@
                 </li>
             </ul>
         </div>
-        <!--<pageLink></pageLink>-->
-    </div>
+        <pageLink status="2" :total="total" :tag="tag" prev="" next=""></pageLink>
+        </div>
 </template>
 
 <script>
@@ -39,13 +39,18 @@
         watch: {
             $route: {
                 handler: function (val, oldVal) {
+                    this.tag = val.query.tag ? val.query.tag : 0
                     this.getPosts()
                 }
             },
         },
         data: function () {
             return {
-                posts: ''
+                posts: '',
+                total: 0,
+                tag: 0,
+                page: 1,
+                limit: 1
             }
         },
         mounted() {
@@ -53,10 +58,19 @@
         },
         methods: {
             getPosts: function () {
-                const tag_id = this.$route.query.tag ? this.$route.query.tag : 0
-                getPostList(tag_id)
+                var tag_id;
+                if(this.tag) {
+                    tag_id = this.tag
+                } else {
+                    tag_id = this.$route.query.tag ? this.$route.query.tag : 0
+                }
+
+                const page = this.$route.query.page ? this.$route.query.page : 1
+                const limit = this.$route.query.limit ? this.$route.query.limit : 20
+                getPostList(tag_id, page, limit )
                     .then(response => {
-                        this.posts = response.data
+                        this.posts = response.data.posts
+                        this.total = response.data.total;
                     }).catch(err => {
                     console.log(err)
                 })

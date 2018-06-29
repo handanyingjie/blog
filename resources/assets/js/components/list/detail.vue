@@ -17,25 +17,18 @@
 
             <div class="panel-body" v-html="post.body"></div>
         </div>
-        <div class="row">
-            <nav aria-label="...">
-                <ul class="pager">
-                    <li>
-                        <router-link :to="{ path: '/detail/' + post.prev }">上一篇</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{ path: '/detail/' + post.next }">下一篇</router-link>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <pageLink status="1" :prev="post.prev" :next="post.next" total="0"></pageLink>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import pageLink from '../pageLink/Index'
 
     export default {
+        components: {
+            pageLink
+        },
         watch: {
             $route: {
                 handler: function (val, oldVal) {
@@ -51,7 +44,6 @@
         },
         mounted: function () {
             this.getPostInfo()
-            this.notify()
         },
         methods: {
             getPostInfo() {
@@ -69,10 +61,6 @@
                 } else {
                     this.post = post;
                 }
-            },
-            notify(){
-                console.log('bbbb')
-                this.$dispatch('pageView','aaaa')
             }
         }
     }

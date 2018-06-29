@@ -47,7 +47,7 @@
                             <a style="font-size: 16px" href="{{ route('post_edit',['post' =>$post['id']])}}"><i class="fa fa-fw fa-pencil" title="修改"></i></a>
                             {{--@endif--}}
                             <a style="font-size: 16px" href="#" onclick="event.preventDefault();
-                                                     document.getElementById('delete-form-{{ $post['id'] }}').submit();"><i class="fa fa-fw fa-trash-o" title="删除"></i></a>
+                                                     if(confirm('确定要删除吗?')){ document.getElementById('delete-form-{{ $post['id'] }}').submit();}"><i class="fa fa-fw fa-trash-o" title="删除"></i></a>
                             @if('0' === $post['published'])
                             <a style="font-size: 16px" href="#" onclick="event.preventDefault();
                                                      document.getElementById('published-form-{{ $post['id'] }}').submit();"><i class="fa fa-fw fa-hand-o-up" title="发布"></i>

@@ -11,3 +11,7 @@ export function getTagList() {
 export function getRankList() {
     return axios.get('api/read');
 }
+
+export function email(data) {
+    return axios.post('api/email',data)
+}

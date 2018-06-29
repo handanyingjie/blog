@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Redis;
+use App\Jobs\SendEmail;
 
 class HomeController extends Controller
 {
@@ -141,5 +143,10 @@ class HomeController extends Controller
                 return $post;
             });
         return response()->json($posts);
+    }
+
+    public function email(Request $request){
+       $this->dispatch(new SendEmail($request->except(['_token'])));
+       return response()->json('ok');
     }
 }

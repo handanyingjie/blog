@@ -21,4 +21,6 @@ Route::group(['namespace' => 'Home'],function (){
     Route::get('post/{id}','ArticleController@show');
     Route::get('tags','TagController@index');
     Route::get('read','HomeController@readRank');
+
+    Route::post('email', 'HomeController@email');
 });

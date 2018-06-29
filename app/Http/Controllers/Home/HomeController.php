@@ -30,7 +30,7 @@ class HomeController extends Controller
         $posts = collect($idArr)->filter(function ($key) {
             return Redis::HGET($key, 'published') === '1';
         })->map(function ($key) {
-            $post['id'] = Redis::HGET($key, 'id');
+            $post['id'] = $key;
             $post['title'] = Redis::HGET($key, 'title');
 //            $post['created_at'] = Carbon::parse(date('Y-m-d H:i:s',Redis::HGET($key, 'published_at')))->diffForHumans();
             $post['created_at'] = Carbon::parse(date('Y-m-d H:i:s', Redis::HGET($key, 'published_at')))->diffForHumans();

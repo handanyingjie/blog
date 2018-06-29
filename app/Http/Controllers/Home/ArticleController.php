@@ -50,17 +50,16 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $key = "post:$id";
-        $post['id'] = Redis::HGET($key, 'id');
-        $post['title'] = Redis::HGET($key, 'title');
-        $post['created_at'] = Carbon::parse(Redis::HGET($key, 'published_at'))->toDateString();
-        $post['body'] = \Parsedown::instance()->text(Redis::HGET($key, 'body'));
+        $post['id'] = $id;
+        $post['title'] = Redis::HGET($id, 'title');
+        $post['created_at'] = Carbon::parse(date('Y-m-d H:i:s',Redis::HGET($id, 'published_at')))->toDateString();
+        $post['body'] = \Parsedown::instance()->text(Redis::HGET($id, 'body'));
 
-        Redis::HINCRBY($key, 'looks', 1);
-        Redis::ZINCRBY('readRank',1, $key);
-        $post['looks'] = Redis::ZSCORE('readRank',$key);
-        $post['prev'] = str_replace('post:','',Redis::HGET($key, 'prev'));
-        $post['next'] = str_replace('post:','',Redis::HGET($key,'next'));
+        Redis::HINCRBY($id, 'looks', 1);
+        Redis::ZINCRBY('readRank',1, $id);
+        $post['looks'] = Redis::ZSCORE('readRank',$id);
+        $post['prev'] = str_replace('post:','',Redis::HGET($id, 'prev'));
+        $post['next'] = str_replace('post:','',Redis::HGET($id,'next'));
         return response()->json($post);
     }
 

@@ -53,7 +53,7 @@ class ArticleController extends Controller
         $key = "post:$id";
         $post['id'] = Redis::HGET($key, 'id');
         $post['title'] = Redis::HGET($key, 'title');
-        $post['created_at'] = Carbon::parse(Redis::HGET($key, 'created_at'))->toDateString();
+        $post['created_at'] = Carbon::parse(Redis::HGET($key, 'published_at'))->toDateString();
         $post['body'] = \Parsedown::instance()->text(Redis::HGET($key, 'body'));
 
         Redis::HINCRBY($key, 'looks', 1);

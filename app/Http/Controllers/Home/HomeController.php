@@ -22,15 +22,18 @@ class HomeController extends Controller
     public function index($tag_id = 0)
     {
         if ($tag_id) {
-            $idArr = Redis::SMEMBERS($tag_id.":posts");
+            $idArr = Redis::SORT($tag_id . ":posts", ['BY' => '*->published_at', 'SORT' => "DESC", "LIMIT" => [0, 20], 'ALPHA' => true]);
         } else {
-            $idArr = Redis::LRANGE('posts:list', 0, -1);
+            $idArr = Redis::SORT('posts:list', ['BY' => '*->published_at', 'SORT' => "DESC", "LIMIT" => [0, 20], 'ALPHA' => true]);
         }
 
-        $posts = collect($idArr)->map(function ($key) {
+        $posts = collect($idArr)->filter(function ($key) {
+            return Redis::HGET($key, 'published') === '1';
+        })->map(function ($key) {
             $post['id'] = Redis::HGET($key, 'id');
             $post['title'] = Redis::HGET($key, 'title');
-            $post['created_at'] = Carbon::parse(Redis::HGET($key, 'published_at'))->diffForHumans();
+//            $post['created_at'] = Carbon::parse(date('Y-m-d H:i:s',Redis::HGET($key, 'published_at')))->diffForHumans();
+            $post['created_at'] = Carbon::parse(date('Y-m-d H:i:s', Redis::HGET($key, 'published_at')))->diffForHumans();
             return $post;
         });
         return response()->json($posts);
@@ -105,9 +108,9 @@ class HomeController extends Controller
     public function readRank()
     {
         $posts = collect(Redis::ZREVRANGEBYSCORE('readRank', '+inf', '-inf', 'WITHSCORES', 'LIMIT', 0, 10))
-                ->map(function ($value, $key) {
-                $post['id'] = Redis::HGET($key,'id');
-                $post['title'] = Redis::HGET($key,'title');
+            ->map(function ($value, $key) {
+                $post['id'] = Redis::HGET($key, 'id');
+                $post['title'] = Redis::HGET($key, 'title');
                 $post['looks'] = $value ?: 0;
                 return $post;
             });

@@ -36,13 +36,14 @@ class PostEventSubscriber
     //有序队列
     public function onLPostsList($event)
     {
-        $this->redis->LPUSH('posts:list',$event->id);
-        $this->redis->HSET($event->id,'published_at',date('Y-m-d H:i:s'));
+//        $this->redis->LPUSH('posts:list',$event->id);
+        $this->redis->HSET($event->id, 'published_at', time());
+        $this->redis->SADD('posts:list', $event->id);
     }
 
     public function onRemPostsList($event)
     {
-        $this->redis->LREM('posts:list', 0, $event->id);
+        $this->redis->SREM('posts:list', $event->id);
     }
 
 

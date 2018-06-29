@@ -20,10 +20,11 @@ class PostController extends Controller
     private $tag;
     private $post;
     private $redis;
-    const IS_TOP_ARR =  [
-            1 => '是',
-            2 => '否'
-        ];
+    const IS_TOP_ARR = [
+        1 => '是',
+        2 => '否'
+    ];
+
     public function __construct(AdminRepostiry $admin, Tag $tag, Post $post)
     {
         $this->middleware('auth');
@@ -32,53 +33,70 @@ class PostController extends Controller
         $this->post = $post;
     }
 
-    public function index(){
+    public function index()
+    {
         $posts = $this->post->posts();
-        return view('admin.post.index',compact('posts'));
+        return view('admin.post.index', compact('posts'));
     }
-    public function create(){
+
+    public function create()
+    {
         $tags = $this->tag->tags();
-        $is_top =  self::IS_TOP_ARR;
-        return view('admin.post.create',compact('tags','is_top'));
+        $is_top = self::IS_TOP_ARR;
+        return view('admin.post.create', compact('tags', 'is_top'));
     }
-    public function store(CreateRequest $request){
+
+    public function store(CreateRequest $request)
+    {
+        Redis::MULTI();
         $id = $this->post->generateTagKey('posts:count');
-        $this->post->generatePost("post:$id",$request->except(['_token','_method','tag_id']));
-        
+        $this->post->generatePost("post:$id", $request->except(['_token', '_method', 'tag_id']));
+
         $this->redis->generateTagPosts($request->tag_id, "post:$id");
+        Redis::EXEC();
         return redirect()->route('post_index');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $tags = $this->tag->tags();
         $is_top = self::IS_TOP_ARR;
         $tag_id = Redis::SMEMBERS("$id:tags");
         $post = $this->post->post($id);
-        return view('admin.post.edit',compact('post','tags','is_top','tag_id','id'));
+        return view('admin.post.edit', compact('post', 'tags', 'is_top', 'tag_id', 'id'));
     }
 
-    public function update(UpdateRequest $request, $id){
-        $this->post->generatePost($id,collect($request->except(['_token','_method','tag_id'])));
-       $this->tag->updateTagPosts([],$request->tag_id, $id);
+    public function update(UpdateRequest $request, $id)
+    {
+        Redis::MULTI();
+        $this->post->generatePost($id, collect($request->except(['_token', '_method', 'tag_id'])));
+        $this->tag->updateTagPosts([], $request->tag_id, $id);
+        Redis::EXEC();
         return redirect()->route('post_index');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $this->post->del($id);
         return back();
     }
 
-    public function published($id){
-        Redis::HSET($id,'published',1);
-
+    public function published($id)
+    {
+        Redis::MULTI();
+        Redis::HSET($id, 'published', 1);
         event(new Published($id));
+        Redis::EXEC();
         return back();
     }
 
-    public function unPublished($id){
-        Redis::HSET($id,'published',0);
+    public function unPublished($id)
+    {
+        Redis::MULTI();
+        Redis::HSET($id, 'published', 0);
 
         event(new UnPublished($id));
+        Redis::EXEC();
         return back();
     }
 }

@@ -4,13 +4,15 @@ namespace App\Services;
 
 use App\Services\Base;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Post extends Base {
 
     public function generatePost($key,$data){
         $this->redis->HMSET($key,collect($data)->merge([
             'slug' => $data['title'],
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+            'published' => 0
         ])->toArray());
         return $key;
     }

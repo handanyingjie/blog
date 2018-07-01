@@ -1,9 +1,9 @@
 <template>
-    <aside class="col-md-3">
+    <div>
         <people></people>
         <tags></tags>
         <rank></rank>
-    </aside>
+    </div>
 </template>
 <script>
     import people from './People'

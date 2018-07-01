@@ -74,7 +74,8 @@
     </div>
 </template>
 <script>
-    import { email } from '../../api/api.js'
+    import { email } from '../../api/api.js';
+    import { Bus } from '../../api/bus.js';
     export default {
         data() {
             return {

@@ -10,6 +10,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
+
 Vue.use(VueRouter);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -18,14 +19,12 @@ Vue.use(VueRouter);
  */
 
 Vue.component('example', require('./components/Example.vue'));
-// Vue.component('tags', require('./components/tags/index.vue'));
-// Vue.component('page', require('./components/pageLink/Index.vue'));
-// Vue.component('top-nav', require('./components/nav/Index.vue'));
-// Vue.component('breadcrumb-nav', require('./components/breadCrumbNav/Index.vue'));
 
 const routes = [
     { path: '/', component: require('./components/list/index.vue')},
-    { path: '/detail/:id', component: require('./components/list/detail.vue') }
+    { path: '/detail/:id', component: require('./components/list/detail.vue') },
+    { path: '/register', component: require('./components/register/Index.vue') },
+    { path: '/login', component: require('./components/login/Index.vue') }
 ];
 
 const router = new VueRouter({

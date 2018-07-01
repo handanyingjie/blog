@@ -15,3 +15,11 @@ export function getRankList() {
 export function email(data) {
     return axios.post('api/email',data)
 }
+
+export function register(data) {
+    return axios.post('api/register',data)
+}
+
+export function code(data) {
+    return axios.post('api/code', data)
+}

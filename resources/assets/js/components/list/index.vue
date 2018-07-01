@@ -1,40 +1,58 @@
 <template>
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">最新文章
-                <router-link :to="{ path: '/posts' }" class="pull-right">更多</router-link>
-            </div>
+    <div id="list">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <!--<div class="row">-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">最新文章
+                                <!--<router-link :to="{ path: '/posts' }" class="pull-right">更多</router-link>-->
+                            </div>
 
-            <ul class="list-group">
-                <li class="list-group-item" v-for="(post, index) in posts" :key="index">
-                    <router-link :to="{ path: '/detail/'+ post.id }">
-                        {{ post.title }}
-                    </router-link>
-                    <span class="meta pull-right">
-                        <!--<router-link  v-for="(tag, index) in post.tags" :key="'tag_'+ index" :to="{ path: '/' , query: { tag: tag.id }}" :title="tag.slug">{{ tag.name }}</router-link>-->
-                        <!--<span> ⋅ </span>-->
-                        <!--12 点赞-->
-                        <!--<span> ⋅ </span>-->
-                        <!--0 回复-->
-                        <!--<span> ⋅ </span>-->
-                        <!--<span class="time">-->
-                            {{ post.created_at }}
-                        <!--</span>-->
-                    </span>
-                </li>
-            </ul>
+                            <ul class="list-group">
+                                <li class="list-group-item" v-for="(post, index) in posts" :key="index">
+                                    <router-link :to="{ path: '/detail/'+ post.id }">
+                                        {{ post.title }}
+                                    </router-link>
+                                    <span class="meta pull-right">
+                    <!--<router-link  v-for="(tag, index) in post.tags" :key="'tag_'+ index" :to="{ path: '/' , query: { tag: tag.id }}" :title="tag.slug">{{ tag.name }}</router-link>-->
+                                        <!--<span> ⋅ </span>-->
+                                        <!--12 点赞-->
+                                        <!--<span> ⋅ </span>-->
+                                        <!--0 回复-->
+                                        <!--<span> ⋅ </span>-->
+                                        <!--<span class="time">-->
+                        {{ post.created_at }}
+                                        <!--</span>-->
+                </span>
+                                </li>
+                            </ul>
+                        <!--</div>-->
+                        <pageLink status="2" :total="total" :tag="tag" prev="" next=""></pageLink>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <rightBox></rightBox>
+                </div>
+            </div>
         </div>
-        <pageLink status="2" :total="total" :tag="tag" prev="" next=""></pageLink>
+        <div class="container-fluid">
+            <footerComponent></footerComponent>
         </div>
+    </div>
 </template>
 
 <script>
     import {getPostList} from '../../api/api.js'
     import pageLink from '../pageLink/Index'
+    import rightBox from  '../slideBar/Index'
+    import footerComponent from '../footer/Index'
 
     export default {
         components: {
-            pageLink
+            pageLink,
+            rightBox,
+            footerComponent
         },
         watch: {
             $route: {
@@ -80,6 +98,9 @@
 </script>
 
 <style scoped>
+    #list {
+        margin-top: 60px;
+    }
     .meta {
         font-size: 12px;
         color: #d0d0d0;

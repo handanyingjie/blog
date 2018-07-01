@@ -13,13 +13,13 @@ use App\Events\Post\UnPublished;
 use App\Events\Post\Update;
 use App\Services\Tag;
 use App\Services\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
 class PostController extends Controller
 {
     private $tag;
     private $post;
-    private $redis;
     const IS_TOP_ARR = [
         1 => '是',
         2 => '否'
@@ -46,14 +46,14 @@ class PostController extends Controller
         return view('admin.post.create', compact('tags', 'is_top'));
     }
 
-    public function store(CreateRequest $request)
+    public function store(Request $request)
     {
-        Redis::MULTI();
+//        Redis::MULTI();
         $id = $this->post->generateTagKey('posts:count');
         $this->post->generatePost("post:$id", $request->except(['_token', '_method', 'tag_id']));
 
-        $this->redis->generateTagPosts($request->tag_id, "post:$id");
-        Redis::EXEC();
+        $this->tag->generateTagPosts($request->tag_id, "post:$id");
+//        Redis::EXEC();
         return redirect()->route('post_index');
     }
 

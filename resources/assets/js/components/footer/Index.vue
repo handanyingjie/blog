@@ -1,6 +1,8 @@
 <template>
-    <div class="jumbotron text-center" style="margin-bottom:0">
-        <p style="margin-top: 7px">冀ICP备16020378号</p>
+    <div class="row">
+        <div class="jumbotron text-center" style="margin-bottom:0">
+            <p style="margin-top: 7px">冀ICP备16020378号</p>
+        </div>
     </div>
 </template>
 <script>

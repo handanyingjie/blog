@@ -11,12 +11,19 @@
     </div>
 </template>
 <script>
-    import { getRankList } from '../../api/api.js'
+    import { getRankList } from '../../api/api.js';
+    import { Bus } from '../../api/bus.js';
+
     export default {
         data: function(){
             return {
                 rank: ''
             }
+        },
+        created(){
+            Bus.$on('incrLook', target => {
+                this.rank[target].look += 1;
+            });
         },
         mounted(){
             this.getRank()

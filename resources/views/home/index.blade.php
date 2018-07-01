@@ -12,7 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
@@ -26,5 +26,7 @@
 </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+{{--<script src="https://unpkg.com/marked@0.3.6"></script>--}}
+{{--<script src="https://unpkg.com/lodash@4.16.0"></script>--}}
 </body>
 </html>

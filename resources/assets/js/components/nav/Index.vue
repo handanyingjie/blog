@@ -25,21 +25,21 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        <li class="dropdown">
-                            <router-link :to="{ path: '/' }">首页</router-link>
-                        </li>
-                        <!--<li class="dropdown">-->
-                            <!--<a href="#">-->
-                                <!--技术笔记-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li class="dropdown">-->
-                            <!--<a href="#">-->
-                                <!--每日阅读-->
-                            <!--</a>-->
-                        <!--</li>-->
+                        <router-link tag="li" :to="{ path: '/' }">
+                            <a class="dropdown">首页</a>
+                        </router-link>
+                        <router-link tag="li" :to="{ path: '/register' }">
+                            <a>
+                                <span class="glyphicon glyphicon-user"></span> 注册
+                            </a>
+                        </router-link>
+                        <router-link tag="li" :to="{ path: '/login' }">
+                            <a>
+                                <span class="glyphicon glyphicon-log-in"></span> 登录
+                            </a>
+                        </router-link>
                     </ul>
                 </div>
             </div>

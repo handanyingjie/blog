@@ -5,25 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\Home\RegisterRequest;
+use App\Http\Requests\Home\LoginRequest;
 use App\Http\Requests\Home\CodeRequest;
 use App\Jobs\SendEmail;
 use App\Mail\RegisterLink;
+use Predis\Pipeline\Pipeline;
+
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-//        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -35,9 +34,17 @@ class HomeController extends Controller
     }
 
     public function test(Request $request){
-//        $res = encrypt(1);
-        $res = decrypt('eyJpdiI6IlFUTVZoaXJDREtOWnZ1TmxmdURKOHc9PSIsInZhbHVlI');
-        dd($res);
+        $renderer = new ImageRenderer(
+            new RendererStyle(400),
+            new ImagickImageBackEnd()
+        );
+        $writer = new Writer($renderer);
+        $QrCodePath = public_path('images/qrcode.png');
+//        dump($QrCodePath);
+//        die;
+        $writer->writeFile('Hello World!', $QrCodePath);
+
+        echo "<img src='./images/qrcode.png'>";
     }
 
     public function register(RegisterRequest $request){
@@ -62,8 +69,19 @@ class HomeController extends Controller
         return response()->json(['status' => 200, 'message' => '邮件已发送!请于24小时之内激活!']);
     }
 
-    public function login(){
-        return 'login';
+    public function login(LoginRequest $request){
+        if(!Redis::HEXISTS('email.to.id',$request->email)){
+            return response()->json(['status' => 404,'message' => '该用户不存在']);
+        }
+
+        $uid = Redis::HGET('email.to.id',$request->email);
+        $password = Redis::HGET("user:$uid",'password');
+        if(!Hash::check($request->password,$password)){
+            return response()->json(['status' => 404,'message' => '密码错误！']);
+        }
+
+        setcookie('laravel_cookie',encrypt($uid),time() + 99 * 365 * 24 * 3600);
+        return response()->json(['status' => 200,'message' => '登陆成功！']);
     }
 
     public function active($id){

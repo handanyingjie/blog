@@ -20,25 +20,11 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav">
                         <!-- Authentication Links -->
                         <router-link tag="li" :to="{ path: '/' }">
                             <a class="dropdown">首页</a>
-                        </router-link>
-                        <router-link tag="li" :to="{ path: '/register' }">
-                            <a>
-                                <span class="glyphicon glyphicon-user"></span> 注册
-                            </a>
-                        </router-link>
-                        <router-link tag="li" :to="{ path: '/login' }">
-                            <a>
-                                <span class="glyphicon glyphicon-log-in"></span> 登录
-                            </a>
                         </router-link>
                     </ul>
                 </div>
@@ -48,7 +34,19 @@
 </template>
 
 <script>
+    import { Bus } from '../../api/bus.js';
     export default {
+        data(){
+            return {
+                uid: 0
+            }
+        },
+        created() {
+            Bus.$on('isLogin', uid => {
+                this.uid = uid;
+                console.log(uid);
+            });
+        }
     }
 </script>
 

@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Tag;
+use App\Models\Tag;
 
 class TagController extends Controller
 {
-    private  $redis;
-    public function __construct(Tag $reids)
+    private $redis;
+    private $tag;
+
+    public function __construct(Tag $reids, Tag $tag)
     {
         $this->redis = $reids;
+        $this->tag = $tag;
     }
 
     /**
@@ -21,8 +24,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = $this->redis->tags();
-        return view('admin.tag.index',compact('tags'));
+        $tags = $this->tag->latest('id')->get();
+        return view('admin.tag.index', compact('tags'));
     }
 
     /**
@@ -38,20 +41,21 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $id = $this->redis->generateTagKey('tags:count');
-        $this->redis->generateTags("tag:$id",$request->name);
+        $this->tag->create(collect($request->except(['_token', '_url']))->merge([
+            'slug' => strtolower($request->name)
+        ])->toArray());
         return redirect()->route('tag_index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -62,37 +66,38 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Tag $tag)
     {
-        $tag = $this->redis->tag($id);
-        return view('admin.tag.edit',compact('tag','id'));
+        return view('admin.tag.edit', compact('tag'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tag $tag)
     {
-        $this->redis->generateTags($id,$request->name);
+        $tag->update(collect($request->except(['_token','_url']))->merge([
+            'slug' => strtolower($request->name)
+        ])->toArray());
         return redirect()->route('tag_index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Tag $tag)
     {
-        $this->redis->del($id);
+        $tag->delete();
         return back();
     }
 }

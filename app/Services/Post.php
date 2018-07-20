@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Log;
 class Post extends Base {
 
     public function generatePost($key,$data){
+        $now = date('Y-m-d H:i:s');
         $this->redis->HMSET($key,collect($data)->merge([
             'slug' => $data['title'],
             'user_id' => Auth::user()->id,
-            'published' => 0
+            'published' => 0,
+            'created_at' => $now,
+            'updated_at' => $now,
         ])->toArray());
         return $key;
     }

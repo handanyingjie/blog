@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Post;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -41,5 +42,7 @@ class AuthServiceProvider extends ServiceProvider
 //        Gate::define('see-all-drafts', function ($user) {
 //            return $user->inRole('editor');
 //        });
+        Passport::routes();
+        Passport::enableImplicitGrant();
     }
 }

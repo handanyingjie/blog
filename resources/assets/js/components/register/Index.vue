@@ -40,7 +40,7 @@
     </div>
 </template>
 <script>
-    import { register, code } from '../../api/api.js'
+    import { register } from '../../api/api.js'
     export default {
         data: function () {
             return {
@@ -54,14 +54,6 @@
             }
         },
         methods: {
-            getCode () {
-                code({ email: this.registerForm.email, _token: Laravel.csrfToken }).then( response => {
-
-
-                } ).catch( err => {
-
-                } )
-            },
             register() {
                 this.verify()
                 register(this.registerForm).then(response => {

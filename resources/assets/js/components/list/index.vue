@@ -15,16 +15,8 @@
                                         {{ post.title }}
                                     </router-link>
                                     <span class="meta pull-right">
-                    <!--<router-link  v-for="(tag, index) in post.tags" :key="'tag_'+ index" :to="{ path: '/' , query: { tag: tag.id }}" :title="tag.slug">{{ tag.name }}</router-link>-->
-                                        <!--<span> ⋅ </span>-->
-                                        <!--12 点赞-->
-                                        <!--<span> ⋅ </span>-->
-                                        <!--0 回复-->
-                                        <!--<span> ⋅ </span>-->
-                                        <!--<span class="time">-->
-                        {{ post.created_at }}
-                                        <!--</span>-->
-                </span>
+                                        {{ post.published_at }}
+                                    </span>
                                 </li>
                             </ul>
                         <!--</div>-->
@@ -43,10 +35,11 @@
 </template>
 
 <script>
-    import {getPostList} from '../../api/api.js'
-    import pageLink from '../pageLink/Index'
-    import rightBox from  '../slideBar/Index'
-    import footerComponent from '../footer/Index'
+    import {getPostList} from '../../api/api.js';
+    import pageLink from '../pageLink/Index';
+    import rightBox from  '../slideBar/Index';
+    import footerComponent from '../footer/Index';
+    import { Bus } from '../../api/bus.js';
 
     export default {
         components: {
@@ -87,8 +80,9 @@
                 const limit = this.$route.query.limit ? this.$route.query.limit : 20
                 getPostList(tag_id, page, limit )
                     .then(response => {
-                        this.posts = response.data.posts
-                        this.total = response.data.total;
+                        this.posts = response.data
+                        // this.total = response.data.total;
+                        Bus.$emit('isLogin',response.data.uid);
                     }).catch(err => {
                     console.log(err)
                 })
@@ -115,5 +109,10 @@
     .meta a:hover, .meta a:focus {
         cursor: pointer;
         color: #d6514d;
+    }
+
+    .mi {
+        min-width: 140px;
+        text-overflow: ellipsis;
     }
 </style>

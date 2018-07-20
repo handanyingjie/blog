@@ -20,7 +20,6 @@
 
                         <div class="panel-body" v-html="post.body"></div>
                     </div>
-                    <pageLink status="1" :prev="post.prev" :next="post.next" total="0"></pageLink>
 
                     <!-- 评论列表begin -->
                     <div class="panel panel-default">
@@ -46,8 +45,7 @@
                                             </div>
 
                                             <div class="media-body">
-                                                <div class="media-heading">A 评论于3天前 <span class="pull-right"><a href=""
-                                                                                                                class="reply">回复</a></span>
+                                                <div class="media-heading">A 评论于3天前 <span class="pull-right"><a class="reply">回复</a></span>
                                                 </div>
                                                 这是啥玩意啊，乱七八糟的
 
@@ -65,7 +63,7 @@
                                             </div>
                                         </div>
                                         <div class="media-footer">
-                                            <a href="" class="reply">回复</a>
+                                            <a class="reply">回复</a>
                                         </div>
                                     </div>
                                 </li>
@@ -102,14 +100,12 @@
 
 <script>
     import axios from 'axios';
-    import pageLink from '../pageLink/Index';
     import markDown from '../markdown/Index';
     import footerComponent from '../footer/Index';
     import { Bus } from '../../api/bus.js';
 
     export default {
         components: {
-            pageLink,
             markDown,
             footerComponent
         },
@@ -124,7 +120,8 @@
             return {
                 post: '',
                 error: '',
-                context: 'aaaaaaaaaaaaaaaaaaaaaaaa'
+                context: 'aaaaaaaaaaaaaaaaaaaaaaaa',
+                uid: 0
             }
         },
         mounted: function () {
@@ -142,6 +139,9 @@
                         this.post = response.data;
                         this.context = response.data.body;
                         Bus.$emit('incrLook',this.post.id);
+                        Bus.$emit('isLogin', uid => {
+                            this.uid = uid;
+                        });
                     })
                     .catch(err => {
                         console.log(err)

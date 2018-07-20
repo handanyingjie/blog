@@ -14,7 +14,7 @@
 @stop
 @section('content')
     <h2 class="page-header">编辑标签</h2>
-    <form action="{{ route('tag_update', ['id' => $id]) }}" method="POST" accept-charset="utf-8">
+    <form action="{{ route('tag_update', ['id' => $tag->id]) }}" method="POST" accept-charset="utf-8">
         {!! csrf_field() !!}
         {!! method_field('PUT') !!}
         <div class="nav-tabs-custom">
@@ -32,9 +32,9 @@
                             <small class="text-red">*</small>
                         </label>
                         <input required="required" type="text" class="form-control" name="name" autocomplete="off"
-                               placeholder="标签" maxlength="80" value="{{ $tag }}">
+                               placeholder="标签" maxlength="80" value="{{ $tag->name }}">
 
-                        <input type="hidden" name="id" value="{{ $id }}">
+                        <input type="hidden" name="id" value="{{ $tag->id }}">
                         @if($errors->has('name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('name') }}</strong>

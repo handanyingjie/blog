@@ -20,11 +20,29 @@ Vue.use(VueRouter);
 
 Vue.component('example', require('./components/Example.vue'));
 
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue')
+);
+
 const routes = [
     { path: '/', component: require('./components/list/index.vue')},
     { path: '/detail/:id', component: require('./components/list/detail.vue') },
     { path: '/register', component: require('./components/register/Index.vue') },
-    { path: '/login', component: require('./components/login/Index.vue') }
+    { path: '/login', component: require('./components/login/Index.vue') },
+    { path: '/auth', component: require('./components/passport/AuthorizedClients.vue') },
+    { path: '/clients', component:  require('./components/passport/Clients.vue') },
+    { path: '/accessTokens',  component: require('./components/passport/PersonalAccessTokens.vue')}
 ];
 
 const router = new VueRouter({

@@ -16,8 +16,10 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\HSETPosts',
         'App\Console\Commands\NewPosts',
         'App\Console\Commands\ReadRank',
-        'App\Console\Commands\test',
-        'App\Console\Commands\tags'
+        'App\Console\Commands\Test',
+        'App\Console\Commands\tags',
+        'App\Console\Commands\SocketServer',
+        'App\Console\Commands\SocketClient',
     ];
 
     /**

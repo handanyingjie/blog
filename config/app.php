@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'PRC',
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
 //        'YuanChao\Editor\EndaEditorServiceProvider'
-
+        Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*

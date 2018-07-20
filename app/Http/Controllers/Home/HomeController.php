@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Models\Api\ApiPost;
+use App\Models\Post;
 use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,47 +24,33 @@ class HomeController extends Controller
      */
     public function index($tag_id, $offset, $count)
     {
-        $offset = ($offset- 1) * $count;
-        if ($tag_id) {
-            Redis::DEL('tmp:search');   //每次搜索前先删除 tmp:search
-            Redis::SINTERSTORE('tmp:search', 'posts:list',$tag_id.":posts");    //求已发布文章跟属于该标签的文章的交集,并存入 tmp:search
-            $idArr = Redis::SORT('tmp:search', ['BY' => '*->published_at', 'SORT' => "DESC", "LIMIT" => [$offset, $count], 'ALPHA' => true]);
-            $total = Redis::SCARD('tmp:search');
-        } else {
-            $idArr = Redis::SORT('posts:list', ['BY' => '*->published_at', 'SORT' => "DESC", "LIMIT" => [$offset, $count], 'ALPHA' => true]);
-            $total = Redis::SCARD('posts:list');
-        }
+//        $offset = ($offset- 1) * $count;
+//
+//        //此处调用Lua脚本
+//        $client = new \Predis\Client();
+//        $client->getProfile()->defineCommand('hmgetall','App\Services\Lua\Demo');
+//        $value = $client->hmgetall($tag_id,$offset, $count);
+//
+//        $data['posts'] = collect($value[0])->map(function($item){
+//            list($title, $published_at, $id) = $item;
+//            return [
+//                'title' => $title,
+//                'created_at' => Carbon::parse(date('Y-m-d H:i:s',$published_at))->diffForHumans(),
+//                'id' => $id
+//            ];
+//        });
+//        $data['total'] = $value[1];
+//        $data['uid'] = 0;
+//        if(isset($_COOKIE['laravel_cookie'])){
+//            $data['uid'] = decrypt($_COOKIE['laravel_cookie']);
+//        }
 
-        $max = count($idArr) - 1;
-        $posts = collect($idArr)->map(function ($key, $index) use ($max, $idArr) {
-            $post['id'] = $key;
-            $post['title'] = Redis::HGET($key, 'title');
-            $post['created_at'] = Carbon::parse(date('Y-m-d H:i:s', Redis::HGET($key, 'published_at')))->diffForHumans();
-
-            if ($max < 2) {
-                $post['prev'] = $post['next'] = $idArr[0];
-            } else {
-                if (0 === $index) {
-                    $post['prev'] = $idArr[$index];
-                    $post['next'] = $idArr[$index + 1];
-                } elseif ($max === $index) {
-                    $post['prev'] = $idArr[$index - 1];
-                    $post['next'] = $idArr[$index];
-                } else {
-                    $post['prev'] = $idArr[$index - 1];
-                    $post['next'] = $idArr[$index + 1];
-                }
-
-                Redis::MULTI();
-                Redis::HSET($key, 'prev', $post['prev']);
-                Redis::HSET($key, 'next', $post['next']);
-                Redis::EXEC();
-            }
-
-            return $post;
-        });
-        $data['posts'] = $posts;
-        $data['total'] = $total;
+        $data = Post::published()
+            ->latest('published_at')
+            ->get(['id','title','published_at'])->flatmap(function ($item){
+                $item->published_at = Carbon::parse($item->published_at)->diffForHumans();
+                return [$item];
+            });
         return response()->json($data);
     }
 

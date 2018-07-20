@@ -6,26 +6,26 @@
                     <div class="form-group">
                         <label for="email" class="col-sm-2 control-label">邮箱:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="email" placeholder="请输入账号">
+                            <input type="text" class="form-control" id="email" placeholder="请输入账号" v-model="form.email">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-sm-2 control-label">密码:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="password" placeholder="请输入密码">
+                            <input type="password" class="form-control" id="password" placeholder="请输入密码" v-model="form.password">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                         <div class="checkbox">
                         <label>
-                        <input type="checkbox">请记住我
+                        <input type="checkbox" v-model="form.remember">请记住我
                         </label>
                         </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">登陆</button>
+                                <button type="submit" class="btn btn-default" @click="toLogin">登陆</button>
                             </div>
                         </div>
                     </div>
@@ -35,7 +35,31 @@
     </div>
 </template>
 <script>
-    export default {}
+    import { login, user } from '../../api/api.js'
+
+    export default {
+        data: function () {
+            return {
+                form: {
+                    'email': '',
+                    'password': '',
+                    'remember': 0
+                }
+            };
+        },
+        methods: {
+            toLogin(){
+                const data = Object.assign(this.form, { _token: Laravel.csrfToken });
+                login(data).then(response => {
+                    if(response.data.status == '200'){
+                        this.$router.push({ path: '/' });
+                    }
+                }).catch(err => {
+                    console.log(err.toString())
+                })
+            }
+        }
+    }
 </script>
 <style>
     #register {

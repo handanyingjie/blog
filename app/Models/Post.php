@@ -28,27 +28,18 @@ class Post extends Model
         return $this->hasMany(Reply::class,'post_id','id');
     }
     public function createPost(array $data){
-        $this->post->generateTagKey('posts:count');
-        $id = Redis::INCR('posts:count');
-        Redis::HMSET("post:$id",collect($data)->merge([
+        $post = $this->create(collect($data)->merge([
             'slug' => $data['title'],
             'user_id' => Auth::user()->id
         ])->toArray());
-        Redis::LPUSH('posts:list',"post:$id");
-//        $post->tags()->attach($data['tag_id']);
-        return "post:$id";
+        return $post->tags()->attach($data['tag_id']);
     }
 
     public function updatePost(array $data){
-//        $post = $this->update(collect($data)->merge([
-//            'slug' => $data['title'],
-//            'user_id' => Auth::user()->id
-//        ])->toArray());
-        Redis::HMSET("post:".$data['id'],collect($data)->merge([
+        $this->update(collect($data)->merge([
             'slug' => $data['title'],
             'user_id' => Auth::user()->id
         ])->toArray());
-//        $this->tags()->sync($data['tag_id']);
-        return "post:".$data['id'];
+        return $this->tags()->sync($data['tag_id']);
     }
 }

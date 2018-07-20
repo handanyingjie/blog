@@ -83,11 +83,21 @@
                     title: '',
                     email: '',
                     message: ''
-                }
+                },
+                uid: 0
             }
+        },
+        created: function(){
+            Bus.$on('isLogin', uid => {
+                this.uid = uid;
+            });
         },
         methods: {
             save: function() {
+                if(!this.uid){
+                    alert('请先登陆!');
+                    return;
+                }
                 if(!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(this.form.email)){
                     alert("邮箱格式错误!")
                     return

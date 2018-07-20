@@ -3,13 +3,16 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Models\Taggable;
 use App\Observes\PostObserver;
+use App\Observes\TagObserver;
 use Carbon\Carbon;
+use Illuminate\Cache\TaggableStore;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use App\Services\Tag;
+use App\Models\Tag;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Post::observe(PostObserver::class);
+        Tag::observe(TagObserver::class);
 
 //        Gate::define('create-post', function ($user) {
 //            return $user->hasAccess('create-post');

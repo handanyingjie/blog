@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Post\CreateRequest;
 use App\Http\Requests\Admin\Post\UpdateRequest;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\Taggable;
 use App\Repository\AdminRepostiry;
 use App\Events\Post\Created;
 use App\Events\Post\Delete;
@@ -73,7 +74,18 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        //更新redis,对应的键值减一
+        $tag_id = $post->tags->pluck(['id']);
+        collect($tag_id)->each(function($id){
+            if(Redis::HEXISTS("tag:$id",'total')){
+                Redis::HINCRBY("tag:$id",'total',-1);
+            }
+        });
+
+        //删除文章，及文章对应的标签
+        $post->tags()->detach();
         $post->delete();
+
         return back();
     }
 

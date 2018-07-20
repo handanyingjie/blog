@@ -34,6 +34,7 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::put('admin/post/unpublished/{post}','PostController@unPublished')
         ->name('post_unpublished');
 
+
     Route::get('admin/tag/index','TagController@index')->name('tag_index');
     Route::get('admin/tag/create','TagController@create')->name('tag_create');
     Route::post('admin/tag/store','TagController@store')->name('tag_store');

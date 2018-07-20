@@ -18,9 +18,15 @@ class TagController extends Controller
 
     public function index(){
         $tags = $this->tag->tags();
-        $tags = collect($tags)->map(function($tag){
-            return ['id' => $tag['id'],'name' => $tag['name'], 'number' => Redis::SCARD($tag['id'].":posts")];
-        });
+//        $tags = collect($tags)->map(function($tag){
+//            return ['id' => $tag['id'],'name' => $tag['name'], 'number' => Redis::SCARD($tag['id'].":posts")];
+//        });
+
+//        $tags = $this->tag->get(['id','name','total']);
+
+//        collect($tags)->each(function ($tag){
+//            Redis::HMSET("tag:$tag->id",collect($tag)->except(['id','slug'])->toArray());
+//        });
         return response()->json($tags);
     }
 }

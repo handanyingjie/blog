@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Services\Base;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class Tag extends Base
 {
@@ -23,13 +24,12 @@ class Tag extends Base
      */
     public function tags()
     {
-        $max = $this->redis->GET('tags:count');
-        $tags = [];
-        for($i = 1; $i <= $max; $i++){
-            if($this->redis->EXISTS("tag:$i")){
-                $tags[] = ['id' => "tag:$i", 'name' => $this->redis->HGET("tag:$i",'name')];
-            }
-        }
+        $keys = $this->redis->KEYS('tag:*');
+
+        $tags = collect($keys)->flatMap(function($key){
+            $id = str_replace("tag","",$key);
+            return [collect(Redis::HGETALL($key))->merge(['id' => $id])->toArray()];
+        });
         return $tags;
     }
 

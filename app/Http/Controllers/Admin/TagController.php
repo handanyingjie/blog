@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Redis;
 
 class TagController extends Controller
 {
@@ -49,6 +50,7 @@ class TagController extends Controller
         $this->tag->create(collect($request->except(['_token', '_url']))->merge([
             'slug' => strtolower($request->name)
         ])->toArray());
+
         return redirect()->route('tag_index');
     }
 

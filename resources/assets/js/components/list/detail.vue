@@ -9,7 +9,7 @@
                             <span class="pull-right">
                 <span class="badge-span">
                     <i class="glyphicon glyphicon-eye-open"></i>
-                    {{ post.looks }}
+                    {{ post.pv }}
                 </span>
                 <time>
                     <i class="glyphicon glyphicon-time"></i>

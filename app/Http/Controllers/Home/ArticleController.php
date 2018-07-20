@@ -50,21 +50,11 @@ class ArticleController extends Controller
      */
     public function show(Post $post)
     {
-//        $post['id'] = $id;
-//
-//        list($title, $published_at, $body) = Redis::HMGET($id,['title','published_at','body']);
-//        $post['title'] = $title;
-//        $post['created_at'] = Carbon::parse(date('Y-m-d H:i:s',$published_at))->toDateString();
-//        $post['body'] = \Parsedown::instance()->text($body);
-//
-//        Redis::HINCRBY($id, 'looks', 1);
-//        Redis::ZINCRBY('readRank',1, $id);
-//        $post['looks'] = Redis::ZSCORE('readRank',$id);
-//        $post['uid'] = 0;
-//        if(isset($_COOKIE['laravel_cookie'])){
-//            $data['uid'] = decrypt($_COOKIE['laravel_cookie']);
-//        }
         $post->body = \Parsedown::instance()->text($post->body);
+
+        //PV
+        $pv = Redis::ZINCRBY("post:PV",1,$post->id);
+        $post = collect($post)->merge(['pv' => $pv]);
         return response()->json($post);
     }
 

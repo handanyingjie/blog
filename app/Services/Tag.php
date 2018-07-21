@@ -27,7 +27,7 @@ class Tag extends Base
         $keys = $this->redis->KEYS('tag:*');
 
         $tags = collect($keys)->flatMap(function($key){
-            $id = str_replace("tag","",$key);
+            $id = str_replace("tag:","",$key);
             return [collect(Redis::HGETALL($key))->merge(['id' => $id])->toArray()];
         });
         return $tags;

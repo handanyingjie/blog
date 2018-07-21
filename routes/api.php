@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     dd($request->all());
     return $request->user();
 });
-Route::group(['namespace' => 'Home', 'middleware' => 'auth:api'],function (){
+Route::group(['namespace' => 'Home'],function (){
     Route::get('posts/{tag_id}/{page}/{limit}','HomeController@index');
     Route::get('post/{post}','ArticleController@show');
     Route::get('tags','TagController@index');

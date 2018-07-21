@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index($tag_id, $offset, $count)
     {
-//        $offset = ($offset- 1) * $count;
+        $offset = ($offset- 1) * $count;
 //
 //        //此处调用Lua脚本
 //        $client = new \Predis\Client();
@@ -45,9 +45,27 @@ class HomeController extends Controller
 //            $data['uid'] = decrypt($_COOKIE['laravel_cookie']);
 //        }
 
+        if($tag_id > 0){
+            $tag = Tag::query()->where('id',$tag_id)
+                ->with(['posts' => function($query){
+                    $query->where('posts.published',1)
+                        ->select(['posts.id','posts.title','posts.published_at'])
+                        ->latest('posts.published_at');
+                }])
+                ->get(['id']);
+            $data = collect($tag[0]->posts)
+                ->flatMap(function ($item){
+                $item['published_at'] = Carbon::parse($item['published_at'])->diffForHumans();
+                return [$item];
+            });
+            return response()->json($data);
+        }
         $data = Post::published()
             ->latest('published_at')
-            ->get(['id','title','published_at'])->flatmap(function ($item){
+            ->offset($offset)
+            ->limit($count)
+            ->get(['id','title','published_at'])
+            ->flatmap(function ($item){
                 $item->published_at = Carbon::parse($item->published_at)->diffForHumans();
                 return [$item];
             });
@@ -122,13 +140,14 @@ class HomeController extends Controller
 
     public function readRank()
     {
-        $posts = collect(Redis::ZREVRANGEBYSCORE('readRank', '+inf', '-inf', 'WITHSCORES', 'LIMIT', 0, 10))
-            ->map(function ($value, $key) {
-                $post['id'] = $key;
-                $post['title'] = Redis::HGET($key, 'title');
-                $post['looks'] = $value ?: 0;
-                return $post;
-            });
+        $rank = Redis::ZREVRANGEBYSCORE('post:PV', '+inf', '-inf', 'WITHSCORES', 'LIMIT', 0, 10);
+        $id = collect($rank)->keys()->all();
+        $posts = collect(Post::whereIn('id',$id)->get(['id','title']))->flatMap(function ($post) use ($rank){
+            $post['looks'] = $rank[$post['id']];
+            return [$post];
+        });
+
+        $posts = $posts->sortByDesc('looks')->values()->all();
         return response()->json($posts);
     }
 

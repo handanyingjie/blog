@@ -22,7 +22,7 @@ class TagController extends Controller
 //            return ['id' => $tag['id'],'name' => $tag['name'], 'number' => Redis::SCARD($tag['id'].":posts")];
 //        });
 
-//        $tags = $this->tag->get(['id','name','total']);
+//        $tags = \App\Models\Tag::get(['id','name','total']);
 
 //        collect($tags)->each(function ($tag){
 //            Redis::HMSET("tag:$tag->id",collect($tag)->except(['id','slug'])->toArray());

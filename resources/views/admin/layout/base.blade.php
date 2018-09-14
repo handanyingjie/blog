@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta id="token" name="token" value="{{csrf_token()}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>编程改变世界</title>
 
     @section('head-css')
         <link href="//cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.css" rel="stylesheet">

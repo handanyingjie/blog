@@ -27,14 +27,14 @@
                         <label>昵称
                             <small class="text-red">*</small>
                         </label>
-                        <input value="LaravelChen" required="required" type="text" class="form-control" name="name" autocomplete="off"
+                        <input value="{{ $name  }}" required="required" type="text" class="form-control" name="name" autocomplete="off"
                                maxlength="80">
                     </div>
                     <div class="form-group">
                         <label>邮箱
                             <small class="text-red">*</small>
                         </label>
-                        <input value="{{'848407695@qq.com'}}" required="required" type="text" class="form-control" name="email" autocomplete="off"
+                        <input value="{{ $email }}" required="required" type="text" class="form-control" name="email" autocomplete="off"
                                maxlength="80">
                     </div>
                 </div>

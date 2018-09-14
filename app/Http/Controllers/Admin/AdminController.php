@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Repository\AdminRepostiry;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -35,7 +36,10 @@ class AdminController extends Controller
      */
     public function admininfo()
     {
-        return view('admin.admin.index');
+        $user = Auth::user();
+        $email = $user->email;
+        $name = $user->name;
+        return view('admin.admin.index',compact('email','name'));
     }
 
     /**

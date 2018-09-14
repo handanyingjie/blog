@@ -11,6 +11,7 @@
 |
 */
 Route::get('/','HomeController@index')->name('home_index');
+Route::get("/family","FamilyController@index")->name('family_index');
 Route::get('/test','HomeController@test');
 Route::group(['namespace' => 'Admin'], function () {
     Route::get('/admin', 'AdminController@index')->name('admin_index'); //后台首页

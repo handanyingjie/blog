@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Post\CreateRequest;
 use App\Http\Requests\Admin\Post\UpdateRequest;
 use App\Models\Post;
+use App\Models\Reply;
 use App\Models\Tag;
 use App\Models\Taggable;
 use App\Repository\AdminRepostiry;

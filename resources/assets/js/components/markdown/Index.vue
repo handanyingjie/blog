@@ -1,6 +1,6 @@
 <template>
     <div>
-        <mavonEditor style="height: 100%"></mavonEditor>
+        <mavonEditor :value="value" style="height: 100%"></mavonEditor>
     </div>
 </template>
 <script>
@@ -10,6 +10,14 @@
     export default {
         components: {
             mavonEditor
+        },
+        props: [
+            'value'
+        ],
+        data() {
+            return {
+                value: ''
+            }
         }
     }
 </script>

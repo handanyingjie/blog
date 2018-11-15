@@ -27,3 +27,10 @@ export function login(data) {
 export function user() {
     return axios.get('api/user');
 }
+
+export function createReply(data) {
+    return axios.post('api/reply/store',data);
+}
+export function getRelies(post_id) {
+    return axios.get('api/reply/' + post_id);
+}

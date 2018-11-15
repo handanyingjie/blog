@@ -27,12 +27,12 @@
                     </li>
                 </ul>
                 <!--<div class="clearfix"></div>-->
-                <span class="text-white">
-                    <a class="btn btn-default btn-block" data-target="#myModal" data-toggle="modal">
-                        <i class="fa fa-envelope-o"></i>
-                        发私信
-                    </a>
-                </span>
+                <!--<span class="text-white">-->
+                    <!--<a class="btn btn-default btn-block" data-target="#myModal" data-toggle="modal">-->
+                        <!--<i class="fa fa-envelope-o"></i>-->
+                        <!--发私信-->
+                    <!--</a>-->
+                <!--</span>-->
             </div>
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">

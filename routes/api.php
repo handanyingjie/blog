@@ -24,6 +24,8 @@ Route::group(['namespace' => 'Home'],function (){
     Route::get('read','HomeController@readRank');
 
     Route::post('email', 'HomeController@email');
+    Route::get('reply/{post_id}', 'ReplyController@index');
+    Route::post('reply/store', 'ReplyController@store');
 });
 
 Route::post('/register','HomeController@register');

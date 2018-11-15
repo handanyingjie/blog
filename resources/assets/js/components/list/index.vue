@@ -77,11 +77,11 @@
                 }
 
                 const page = this.$route.query.page ? this.$route.query.page : 1
-                const limit = this.$route.query.limit ? this.$route.query.limit : 20
+                const limit = this.$route.query.limit ? this.$route.query.limit : 30
                 getPostList(tag_id, page, limit )
                     .then(response => {
-                        this.posts = response.data
-                        // this.total = response.data.total;
+                        this.posts = response.data;
+                        this.total = response.data.total;
                         Bus.$emit('isLogin',response.data.uid);
                     }).catch(err => {
                     console.log(err)

@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Home;
+
 
 use App\Models\Reply;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class ReplyController extends Controller
 {
@@ -12,9 +15,10 @@ class ReplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($post_id)
     {
-        //
+        $replies = Reply::query()->where('post_id',$post_id)->latest('id')->get(['id','nickname','body','created_at']);
+        return response()->json($replies);
     }
 
     /**
@@ -35,7 +39,8 @@ class ReplyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Reply::create($request->except('_token'));
+        return response()->json(['status' => 200, 'message' => '评论成功']);
     }
 
     /**

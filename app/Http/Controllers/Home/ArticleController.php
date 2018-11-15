@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Models\Post;
+use App\Models\Reply;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -55,6 +56,7 @@ class ArticleController extends Controller
         //PV
         $pv = Redis::ZINCRBY("post:PV",1,$post->id);
         $post = collect($post)->merge(['pv' => $pv]);
+
         return response()->json($post);
     }
 

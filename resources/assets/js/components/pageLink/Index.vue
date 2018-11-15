@@ -11,7 +11,7 @@
             </ul>
         </nav>
 
-        <nav v-if="pages > 1 && status == 2" aria-label="Page navigation" class="center">
+        <nav v-if="pages >= 1 && status == 2" aria-label="Page navigation" class="center">
             <ul class="pagination">
                 <router-link tag="li" :to="{ path: '/', query: { page: prevClick, limit: pageSize,  tag: tag }}">
                     <a aria-label="Previous">
@@ -53,7 +53,7 @@
         },
         data: function () {
             return {
-                pageSize: 20,
+                pageSize: 30,
                 curPage: 1
             }
         }

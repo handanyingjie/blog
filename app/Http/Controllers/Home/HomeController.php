@@ -60,6 +60,7 @@ class HomeController extends Controller
             });
             return response()->json($data);
         }
+
         $data = Post::published()
             ->latest('published_at')
             ->offset($offset)
@@ -69,6 +70,8 @@ class HomeController extends Controller
                 $item->published_at = Carbon::parse($item->published_at)->diffForHumans();
                 return [$item];
             });
+        $data['total'] = Post::count();
+
         return response()->json($data);
     }
 
